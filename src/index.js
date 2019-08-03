@@ -1,8 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+
 import * as serviceWorker from './serviceWorker';
+import Routes from './routes/index';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:8000'
+});
+
+const App = () => (
+  <ApolloProvider client={client}>
+    <div>
+      <Routes />>
+    </div>
+  </ApolloProvider>
+);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
