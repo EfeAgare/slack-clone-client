@@ -1,21 +1,14 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-function Routes() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+/* eslint-disable no-unused-expressions */
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Home } from './home.js';
 
-export default Routes;
+export const Routes = () => {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={Home} />
+      </Switch>
+    </BrowserRouter>
+  );
+};
