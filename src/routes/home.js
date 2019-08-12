@@ -23,12 +23,3 @@ import { gql } from 'apollo-boost';
       </div>
     ));
 }
-
-
-// {
-//   allUsers {
-//     id
-//     username
-//     email
-//   }
-// }
