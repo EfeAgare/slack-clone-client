@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Message, Button, Container, Header, Input } from 'semantic-ui-react';
+import { Button, Container, Header, Form, Message } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
@@ -52,31 +52,42 @@ class Login extends Component {
       });
       this.errors = err;
     }
-    console.log(res.data);
+    console.log(this.errors);
   };
   render() {
     return (
       <Container text>
-        <Header as="h2">Register</Header>
-
-        <Input
-          fluid
-          // error={!!emailError}
-          name="email"
-          placeholder="Email"
-          value={this.email}
-          onChange={this.onChange}
-        />
-        <Input
-          type="password"
-          fluid
-          // error={!!passwordError}
-          name="password"
-          placeholder="Password"
-          value={this.password}
-          onChange={this.onChange}
-        />
-        <Button onClick={this.onSubmit}>Submit</Button>
+        <Header as="h2">Login</Header>
+        <Form error>
+          <Form.Field>
+            <Form.Input
+              fluid
+              error={this.errors.emailError}
+              name="email"
+              placeholder="Email"
+              value={this.email}
+              onChange={this.onChange}
+            />
+            {/* {this.errors.emailError && (
+              <Message error list={[this.errors.emailError]} />
+            )} */}
+          </Form.Field>
+          <Form.Field>
+            <Form.Input
+              type="password"
+              fluid
+              error={this.errors.passwordError}
+              name="password"
+              placeholder="Password"
+              value={this.password}
+              onChange={this.onChange}
+            />
+            {this.errors.passwordError && (
+              <Message error list={[this.errors.passwordError]} />
+            )}
+          </Form.Field>
+          <Button onClick={this.onSubmit}>Submit</Button>
+        </Form>
       </Container>
     );
   }

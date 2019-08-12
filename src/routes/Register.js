@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Message, Button, Container, Header, Input } from 'semantic-ui-react';
+import {
+  Form,
+  Message,
+  Button,
+  Container,
+  Header
+} from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -62,39 +68,47 @@ class Register extends Component {
       passwordError,
       emailError
     } = this.state;
-
+console.log(usernameError)
     return (
       <Container text>
         <Header as="h2">Register</Header>
-        <Input
-          fluid
-          placeholder="Username"
-          error={!!usernameError}
-          name="username"
-          value={username}
-          onChange={this.onChange}
-        />
-        {usernameError && <Message error list={[usernameError]} />}
-        <Input
-          fluid
-          error={!!emailError}
-          name="email"
-          placeholder="Email"
-          value={email}
-          onChange={this.onChange}
-        />
-        {emailError && <Message error list={[emailError]} />}
-        <Input
-          type="password"
-          fluid
-          error={!!passwordError}
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={this.onChange}
-        />
-        {passwordError && <Message error list={[passwordError]} />}
-        <Button onClick={this.onSubmit}>Submit</Button>
+        <Form error>
+          <Form.Field>
+            <Form.Input 
+              fluid
+              placeholder="Username"
+              error={!!usernameError ? usernameError : null}
+              name="username"
+              value={username}
+              onChange={this.onChange}
+            />
+            
+          </Form.Field>
+          <Form.Field>
+            <Form.Input 
+              fluid
+              error={!!emailError ? emailError : null}
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={this.onChange}
+            />
+            {/* {emailError && <Message error list={[emailError]} />} */}
+          </Form.Field>
+          <Form.Field>
+            <Form.Input 
+              type="password"
+              fluid
+              error={!!passwordError ? passwordError : null}
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={this.onChange}
+            />
+            {/* {passwordError && <Message error list={[passwordError]} />} */}
+          </Form.Field>
+          <Button onClick={this.onSubmit}>Submit</Button>
+        </Form>
       </Container>
     );
   }
