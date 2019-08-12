@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import {
-  Form,
-  Message,
-  Button,
-  Container,
-  Header
-} from 'semantic-ui-react';
+import { Form, Button, Container, Header } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const SIGN_UP = gql`
+const SignUpMutation = gql`
   mutation($username: String!, $email: String!, $password: String!) {
     register(username: $username, email: $email, password: $password) {
       ok
@@ -68,13 +62,13 @@ class Register extends Component {
       passwordError,
       emailError
     } = this.state;
-console.log(usernameError)
+    console.log(usernameError);
     return (
       <Container text>
         <Header as="h2">Register</Header>
         <Form error>
           <Form.Field>
-            <Form.Input 
+            <Form.Input
               fluid
               placeholder="Username"
               error={!!usernameError ? usernameError : null}
@@ -82,10 +76,9 @@ console.log(usernameError)
               value={username}
               onChange={this.onChange}
             />
-            
           </Form.Field>
           <Form.Field>
-            <Form.Input 
+            <Form.Input
               fluid
               error={!!emailError ? emailError : null}
               name="email"
@@ -96,7 +89,7 @@ console.log(usernameError)
             {/* {emailError && <Message error list={[emailError]} />} */}
           </Form.Field>
           <Form.Field>
-            <Form.Input 
+            <Form.Input
               type="password"
               fluid
               error={!!passwordError ? passwordError : null}
@@ -114,4 +107,4 @@ console.log(usernameError)
   }
 }
 
-export default graphql(SIGN_UP)(Register);
+export default graphql(SignUpMutation)(Register);

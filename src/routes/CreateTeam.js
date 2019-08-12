@@ -5,12 +5,10 @@ import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
 import gql from 'graphql-tag';
 
-const LoginMutation = gql`
-  mutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+const CreateTeamMutation = gql`
+  mutation($name: String!) {
+    createTeam(name: $name) {
       ok
-      token
-      refreshToken
       errors {
         path
         message
@@ -19,12 +17,11 @@ const LoginMutation = gql`
   }
 `;
 
-class Login extends Component {
+class CreateTeam extends Component {
   constructor(props) {
     super(props);
     extendObservable(this, {
-      email: '',
-      password: '',
+      name: '',
       errors: {}
     });
   }
@@ -35,16 +32,15 @@ class Login extends Component {
   };
 
   onSubmit = async () => {
-    const { email, password } = this;
+    const { name } = this;
     const res = await this.props.mutate({
-      variables: { email, password }
+      variables: { name }
     });
 
-    const { ok, errors, token, refreshToken } = res.data.login;
+    const { ok, errors } = res.data.createTeam;
 
     if (ok) {
-      localStorage.setItem('token', token);
-      localStorage.setItem('refreshToken', refreshToken);
+      this.props.history.push('/');
     } else {
       const err = {};
       errors.map(({ path, message }) => {
@@ -52,36 +48,24 @@ class Login extends Component {
       });
       this.errors = err;
     }
-    console.log(this.errors);
   };
   render() {
     return (
       <Container text>
-        <Header as="h2">Login</Header>
+        <Header as="h2">Create Team</Header>
         <Form error>
           <Form.Field>
             <Form.Input
               fluid
-              error={this.errors.emailError}
-              name="email"
-              placeholder="Email"
-              value={this.email}
+              error={this.errors.nameError}
+              name="name"
+              placeholder="Name"
+              value={this.name}
               onChange={this.onChange}
             />
             {/* {this.errors.emailError && (
               <Message error list={[this.errors.emailError]} />
             )} */}
-          </Form.Field>
-          <Form.Field>
-            <Form.Input
-              type="password"
-              fluid
-              error={this.errors.passwordError}
-              name="password"
-              placeholder="Password"
-              value={this.password}
-              onChange={this.onChange}
-            />
           </Form.Field>
           <Button onClick={this.onSubmit}>Submit</Button>
         </Form>
@@ -90,4 +74,4 @@ class Login extends Component {
   }
 }
 
-export default graphql(LoginMutation)(observer(Login));
+export default graphql(CreateTeamMutation)(observer(CreateTeam));
