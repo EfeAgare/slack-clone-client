@@ -1,25 +1,25 @@
-import React from 'react'
-import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import React from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
- export const  Home = () =>{
-  const { loading, error, data } = useQuery(gql`
-    {
-  allUsers {
-    id
-    username
-    email
+const HomeQuery = gql`
+  {
+    allUsers {
+      id
+      username
+      email
+    }
   }
-}
-  `);
+`;
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+const Home = ({ data: { loading, allUsers } }) =>
+  loading
+    ? null
+    : allUsers.map(({ id, username, email }) => (
+        <div key={id}>
+          <p>{username}</p>
+          <p>{email}</p>
+        </div>
+      ));
 
-    return data.allUsers.map(({ id, username, email }) => (
-      <div key={id}>
-        <p>{username}</p>
-        <p>{email}</p>
-      </div>
-    ));
-}
+export default graphql(HomeQuery)(Home);

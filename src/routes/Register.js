@@ -46,6 +46,7 @@ class Register extends Component {
       this.props.history.push('/');
     } else {
       const err = {};
+      // eslint-disable-next-line
       errors.map(({ path, message }) => {
         err[`${path}Error`] = message;
       });

@@ -36,13 +36,14 @@ class CreateTeam extends Component {
     const res = await this.props.mutate({
       variables: { name }
     });
-
+    console.log(res)
     const { ok, errors } = res.data.createTeam;
 
     if (ok) {
       this.props.history.push('/');
     } else {
       const err = {};
+      // eslint-disable-next-line
       errors.map(({ path, message }) => {
         err[`${path}Error`] = message;
       });
@@ -52,7 +53,7 @@ class CreateTeam extends Component {
   render() {
     return (
       <Container text>
-        <Header as="h2">Create Team</Header>
+        <Header as="h2">Create A Team</Header>
         <Form error>
           <Form.Field>
             <Form.Input

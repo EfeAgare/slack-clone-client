@@ -47,6 +47,7 @@ class Login extends Component {
       localStorage.setItem('refreshToken', refreshToken);
     } else {
       const err = {};
+      // eslint-disable-next-line
       errors.map(({ path, message }) => {
         err[`${path}Error`] = message;
       });
