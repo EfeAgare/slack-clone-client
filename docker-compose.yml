@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: npm start
+    volumes:
+      - .:/slack-clone-client
+    ports:
+      - "3000:3000"
+    networks:
+      - some-net
+
+networks:
+  some-net:
+    driver: bridge

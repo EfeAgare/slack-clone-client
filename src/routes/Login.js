@@ -41,10 +41,11 @@ class Login extends Component {
     });
 
     const { ok, errors, token, refreshToken } = res.data.login;
-
+    
     if (ok) {
       localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
+      this.props.history.push('/');
     } else {
       const err = {};
       // eslint-disable-next-line
