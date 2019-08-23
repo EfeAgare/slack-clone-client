@@ -8,8 +8,10 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - some-net
+      - some-net    # load-balanced network
 
+
+### which is a load-balanced overlay network
 networks:
   some-net:
     driver: bridge
