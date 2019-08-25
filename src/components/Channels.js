@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styled from 'styled-components';
 
 const ChannelWrapper = styled.div`
@@ -9,26 +8,69 @@ const ChannelWrapper = styled.div`
   color: #958993;
 `;
 
-const channel = ({ id, name }) => <li key={`channel-${id}`}>{`# ${name}`}</li>;
-const user = ({ id, name }) => <li key={`channel-${id}`}>{name}</li>;
+const TeamNameHeader = styled.h1`
+  color: #fff;
+  font-size: 20px;
+`;
+
+const SideBarList = styled.ul`
+  width: 100%;
+  list-style: none;
+  padding-left: 0px;
+`;
+
+const paddingLeft = 'padding-left: 10px';
+
+const SideBarListItem = styled.li`
+  padding: 2px;
+  ${paddingLeft};
+  &:hover {
+    background: #3e313c;
+  }
+`;
+
+const SideBarListHeader = styled.li`
+  ${paddingLeft};
+`;
+
+const PushLeft = styled.div`
+  ${paddingLeft};
+`;
+
+const Green = styled.span`
+  color: #38978d;
+`;
+
+// &#8226; unicode character
+const Bubble = ({ on = true }) => (on ? <Green>&#8226;</Green> : '○');
+
+const channel = ({ id, name }) => (
+  <SideBarListItem key={`channel-${id}`}># {name}</SideBarListItem>
+);
+
+const user = ({ id, name }) => (
+  <SideBarListItem key={`user-${id}`}>
+    <Bubble /> {name}
+  </SideBarListItem>
+);
 
 export default ({ teamName, username, channels, users }) => (
   <ChannelWrapper>
-    <div>
-      {teamName}
+    <PushLeft>
+      <TeamNameHeader>{teamName}</TeamNameHeader>
       {username}
-    </div>
+    </PushLeft>
     <div>
-      <ul>
-        <li>Channels</li>
+      <SideBarList>
+        <SideBarListHeader>Channels</SideBarListHeader>
         {channels.map(channel)}
-      </ul>
+      </SideBarList>
     </div>
     <div>
-      <ul>
-        <li>Direct Messages</li>
+      <SideBarList>
+        <SideBarListHeader>Direct Messages</SideBarListHeader>
         {users.map(user)}
-      </ul>
+      </SideBarList>
     </div>
   </ChannelWrapper>
 );
