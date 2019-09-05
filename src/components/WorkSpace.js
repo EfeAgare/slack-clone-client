@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TeamWrapper = styled.div`
+const WorkSpaceWrapper = styled.div`
   grid-column: 1;
   grid-row: 1 / 4;
   background-color: #362234;
   color: #958993;
 `;
 
-const TeamList = styled.ul`
+const WorkSpaceList = styled.ul`
   width: 100%;
   padding-left: 0px;
   list-style: none;
 `;
 
-const TeamListItem = styled.li`
+const WorkSpaceListItem = styled.li`
   height: 50px;
   width: 50px;
   background-color: #676066;
@@ -33,10 +33,12 @@ const TeamListItem = styled.li`
   }
 `;
 
-const team = ({ id, letter }) => <TeamListItem key={`team-${id}`}>{letter}</TeamListItem>;
+const WorkSpace = ({ id, letter }) => <WorkSpaceListItem key={`workSpace-${id}`}>{letter}</WorkSpaceListItem>;
 
-export default ({ teams }) => (
-  <TeamWrapper>
-    <TeamList>{teams.map(team)}</TeamList>
-  </TeamWrapper>
+export default ({ allWorkSpaces }) => (
+  
+  <WorkSpaceWrapper>
+    {console.log(allWorkSpaces)}
+    <WorkSpaceList>{allWorkSpaces.map(WorkSpace)}</WorkSpaceList>
+  </WorkSpaceWrapper>
 );

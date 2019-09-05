@@ -7,6 +7,8 @@ const SignUpMutation = gql`
   mutation($username: String!, $email: String!, $password: String!) {
     register(username: $username, email: $email, password: $password) {
       ok
+      token
+      refreshToken
       errors {
         path
         message
@@ -40,9 +42,11 @@ class Register extends Component {
       variables: this.state
     });
 
-    const { ok, errors } = res.data.register;
+    const { ok, errors, token, refreshToken } = res.data.register;
 
     if (ok) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
       this.props.history.push('/');
     } else {
       const err = {};
@@ -52,7 +56,6 @@ class Register extends Component {
       });
       this.setState(err);
     }
-    console.log(res.data.register.errors);
   };
   render() {
     const {

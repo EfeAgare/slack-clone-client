@@ -1,7 +1,6 @@
 FROM node:10
 
 # Create app directory
-
 RUN mkdir /slack-clone-client 
 
 WORKDIR /slack-clone-client 

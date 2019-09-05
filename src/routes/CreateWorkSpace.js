@@ -5,9 +5,9 @@ import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
 import gql from 'graphql-tag';
 
-const CreateTeamMutation = gql`
+const CreateWorkSpaceMutation = gql`
   mutation($name: String!) {
-    createTeam(name: $name) {
+    createWorkSpace(name: $name) {
       ok
       errors {
         path
@@ -17,7 +17,7 @@ const CreateTeamMutation = gql`
   }
 `;
 
-class CreateTeam extends Component {
+class CreateWorkSpace extends Component {
   constructor(props) {
     super(props);
     extendObservable(this, {
@@ -37,7 +37,7 @@ class CreateTeam extends Component {
       variables: { name }
     });
     console.log(res)
-    const { ok, errors } = res.data.createTeam;
+    const { ok, errors } = res.data.createWorkSpace;
 
     if (ok) {
       this.props.history.push('/');
@@ -75,4 +75,4 @@ class CreateTeam extends Component {
   }
 }
 
-export default graphql(CreateTeamMutation)(observer(CreateTeam));
+export default graphql(CreateWorkSpaceMutation)(observer(CreateWorkSpace));
