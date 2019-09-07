@@ -38,7 +38,6 @@ const WorkSpace = ({ id, letter }) => <WorkSpaceListItem key={`workSpace-${id}`}
 export default ({ allWorkSpaces }) => (
   
   <WorkSpaceWrapper>
-    {console.log(allWorkSpaces)}
     <WorkSpaceList>{allWorkSpaces.map(WorkSpace)}</WorkSpaceList>
   </WorkSpaceWrapper>
 );

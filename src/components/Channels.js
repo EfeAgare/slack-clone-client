@@ -8,7 +8,7 @@ const ChannelWrapper = styled.div`
   color: #958993;
 `;
 
-const TeamNameHeader = styled.h1`
+const WorkSpaceNameHeader = styled.h1`
   color: #fff;
   font-size: 20px;
 `;
@@ -54,10 +54,10 @@ const user = ({ id, name }) => (
   </SideBarListItem>
 );
 
-export default ({ teamName, username, channels, users }) => (
+export default ({ workSpaceName, username, channels, users }) => (
   <ChannelWrapper>
     <PushLeft>
-      <TeamNameHeader>{teamName}</TeamNameHeader>
+      <WorkSpaceNameHeader>{workSpaceName}</WorkSpaceNameHeader>
       {username}
     </PushLeft>
     <div>

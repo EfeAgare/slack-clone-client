@@ -12,7 +12,11 @@ const allWorkSpaceQuery = gql`
     allWorkSpace {
       id
       name
-      owner
+      userId
+      channels{
+        id
+        name
+      }
     }
   }
 `;
@@ -22,12 +26,8 @@ const SideBar = ({ data: { loading, allWorkSpace }, currentTeamId }) => {
     return <p> Loading ...</p>;
   }
 
-  const teamIndex = _.findIndex(allWorkSpace, {'owner': currentTeamId});
-  const team = allWorkSpace[teamIndex];
-  console.log(allWorkSpace.map(t => ({
-    id: t.id,
-    letter: t.name.charAt(0).toUpperCase()
-  })))
+  const workSpaceIndex = _.findIndex(allWorkSpace, {'userId':currentTeamId});
+  const workSpace = allWorkSpace[workSpaceIndex];
   let username;
   try {
     const token = localStorage.getItem('token');
@@ -36,7 +36,7 @@ const SideBar = ({ data: { loading, allWorkSpace }, currentTeamId }) => {
   } catch (error) {}
   return [
     <WorkSpace
-      key="team-sidebar"
+      key="workSpace-sidebar"
       allWorkSpaces={allWorkSpace.map(t => ({
         id: t.id,
         letter: t.name.charAt(0).toUpperCase()
@@ -44,10 +44,9 @@ const SideBar = ({ data: { loading, allWorkSpace }, currentTeamId }) => {
     />,
     <Channels
       key="channel-sidebar"
-      teamName={team.name}
+      workSpaceName={workSpace.name}
       username={username}
-      channels={[{ id: 1, name: 'general' }, { id: 2, name: 'random' }]}
-      // channels={team.channels}
+      channels={workSpace.channels}
       users={[{ id: 1, name: 'efe' }, { id: 2, name: 'knowledge' }]}
     >
       Channels
