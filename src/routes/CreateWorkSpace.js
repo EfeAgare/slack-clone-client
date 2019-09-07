@@ -53,7 +53,7 @@ class CreateWorkSpace extends Component {
   render() {
     return (
       <Container text>
-        <Header as="h2">Create A Team</Header>
+        <Header as="h2">Create A WorkSpace</Header>
         <Form error>
           <Form.Field>
             <Form.Input

@@ -21,12 +21,12 @@ const allWorkSpaceQuery = gql`
   }
 `;
 
-const SideBar = ({ data: { loading, allWorkSpace }, currentTeamId }) => {
+const SideBar = ({ data: { loading, allWorkSpace }, currentWorkSpaceId }) => {
   if (loading) {
     return <p> Loading ...</p>;
   }
 
-  const workSpaceIndex = _.findIndex(allWorkSpace, {'userId':currentTeamId});
+  const workSpaceIndex = _.findIndex(allWorkSpace, {'userId':currentWorkSpaceId});
   const workSpace = allWorkSpace[workSpaceIndex];
   let username;
   try {

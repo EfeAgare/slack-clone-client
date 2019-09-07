@@ -5,7 +5,7 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import CreateWorkSpace from './CreateWorkSpace';
-import ViewTeam from './ViewTeam';
+import ViewWorkSpace from './ViewWorkSpace';
 import { PrivateRoute } from '../utils/authenticate';
 
 export const Routes = () => {
@@ -15,8 +15,8 @@ export const Routes = () => {
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/view-team" component={ViewTeam} />
-        <PrivateRoute exact path="/create-team" component={CreateWorkSpace} />
+        <Route exact path="/view-workSpace" component={ViewWorkSpace} />
+        <PrivateRoute exact path="/create-workSpace" component={CreateWorkSpace} />
       </Switch>
     </BrowserRouter>
   );
