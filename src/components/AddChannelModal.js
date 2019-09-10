@@ -16,26 +16,28 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
     <Modal.Content>
       <Formik
         initialValues={{ name: '' }}
-        onSubmit={async (values, { setSubmitting }) =>
-          {
-            setSubmitting(false);
-            await mutate({
-              variables: {
-                workSpaceId: parseInt(workSpaceId, 10),
-                name: values.name
-              },
-              update: (store, { data: { allWorkSpace} }) => {
-                // Read the data from our cache for this query.
-                const data = store.readQuery({ query: allWorkSpaceQuery });
-                // Add our comment from the mutation to the end.
-                data.channels.push(allWorkSpace);
-                // Write our data back to the cache.
-                store.writeQuery({ query: allWorkSpaceQuery, data });
+        onSubmit={async (values, { setSubmitting }) => {
+          setSubmitting(false);
+          await mutate({
+            variables: {
+              workSpaceId: parseInt(workSpaceId, 10),
+              name: values.name
+            },
+            update: (store, { data: { createChannel } }) => {
+              // Read the data from our cache for this query.
+              const { ok, channel  } = createChannel;
+              if (!ok) {
+                return;
               }
-            });
-            onClose();
-          }
-        }
+              const data = store.readQuery({ query: allWorkSpaceQuery });
+              // Add our channel from the mutation to the end.
+              data.allWorkSpace.find(workSpace => workSpace.id === workSpaceId).channels.push(channel);
+              // Write our data back to the cache.
+              store.writeQuery({ query: allWorkSpaceQuery, data });
+            }
+          });
+          onClose();
+        }}
       >
         {({
           values,

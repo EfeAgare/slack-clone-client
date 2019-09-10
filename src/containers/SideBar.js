@@ -1,10 +1,10 @@
-import findIndex from 'lodash/findIndex';
 import React, { Component, Fragment } from 'react';
 import jwt from 'jsonwebtoken';
 import { graphql } from 'react-apollo';
 import WorkSpace from '../components/WorkSpace';
 import Channels from '../components/Channels';
 import AddChannelModal from '../components/AddChannelModal';
+import sortBy from 'lodash/sortBy';
 
 import allWorkSpaceQuery from '../graphql/query/allWorkSpace';
 
@@ -24,10 +24,9 @@ class SideBar extends Component {
       return <p> Loading ...</p>;
     }
 
-    const workSpaceIndex = currentWorkSpaceId
-      ? findIndex(allWorkSpace, { id: parseInt(currentWorkSpaceId, 10) })
-      : 0;
-    const workSpace = allWorkSpace[workSpaceIndex];
+    
+    const workSpace = allWorkSpace.find(workSpace => workSpace.id === parseInt(currentWorkSpaceId, 10) )
+ 
     let username;
     try {
       const token = localStorage.getItem('token');
@@ -47,8 +46,9 @@ class SideBar extends Component {
         <Channels
           key="channel-sidebar"
           workSpaceName={workSpace.name}
+          workSpaceId={workSpace.id}
           username={username}
-          channels={workSpace.channels}
+          channels={sortBy(workSpace.channels, "name")}
           onAddChannelClick={this.handleAddChannelClick}
           users={[{ id: 1, name: 'efe' }, { id: 2, name: 'knowledge' }]}
         >

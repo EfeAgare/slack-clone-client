@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const ChannelWrapper = styled.div`
   grid-column: 2;
@@ -45,8 +46,10 @@ const Green = styled.span`
 // &#8226; unicode character
 const Bubble = ({ on = true }) => (on ? <Green>&#8226;</Green> : '○');
 
-const channel = ({ id, name }) => (
-  <SideBarListItem key={`channel-${id}`}># {name}</SideBarListItem>
+const channel = ({ id, name }, workSpaceId) => (
+  <Link key={`channel-${id}`} to={`/view-workspace/${workSpaceId}/${id}`}>
+    <SideBarListItem># {name}</SideBarListItem>
+  </Link>
 );
 
 const user = ({ id, name }) => (
@@ -60,7 +63,8 @@ export default ({
   username,
   channels,
   users,
-  onAddChannelClick
+  onAddChannelClick,
+  workSpaceId
 }) => (
   <ChannelWrapper>
     <PushLeft>
@@ -72,7 +76,7 @@ export default ({
         <SideBarListHeader>
           Channels <Icon onClick={onAddChannelClick} name="plus circle" />
         </SideBarListHeader>
-        {channels.map(channel)}
+        {channels.map(c => channel(c, workSpaceId))}
       </SideBarList>
     </div>
     <div>

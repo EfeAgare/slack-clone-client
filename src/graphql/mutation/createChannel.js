@@ -2,7 +2,13 @@ import gql from 'graphql-tag';
 
 export const createChannelMutation = gql`
   mutation($workSpaceId: Int!, $name: String!) {
-    createChannel(workSpaceId: $workSpaceId, name: $name)
+    createChannel(workSpaceId: $workSpaceId, name: $name) {
+      ok
+      channel {
+        id
+        name
+      }  
+    }
   }
 `;
 
