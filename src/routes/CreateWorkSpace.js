@@ -9,6 +9,9 @@ const CreateWorkSpaceMutation = gql`
   mutation($name: String!) {
     createWorkSpace(name: $name) {
       ok
+      workSpace {
+        id
+      }
       errors {
         path
         message
@@ -37,10 +40,10 @@ class CreateWorkSpace extends Component {
       variables: { name }
     });
     console.log(res)
-    const { ok, errors } = res.data.createWorkSpace;
+    const { ok, errors, workSpace } = res.data.createWorkSpace;
 
     if (ok) {
-      this.props.history.push('/');
+      this.props.history.push(`/view-workspace/${workSpace.id}`);
     } else {
       const err = {};
       // eslint-disable-next-line
@@ -64,9 +67,7 @@ class CreateWorkSpace extends Component {
               value={this.name}
               onChange={this.onChange}
             />
-            {/* {this.errors.emailError && (
-              <Message error list={[this.errors.emailError]} />
-            )} */}
+            
           </Form.Field>
           <Button onClick={this.onSubmit}>Submit</Button>
         </Form>

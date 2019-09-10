@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Icon } from 'semantic-ui-react';
 
 const ChannelWrapper = styled.div`
   grid-column: 2;
-  grid-row: 1 / 4;
+  grid-row: 1 / 5;
   background-color: #4e3a4c;
   color: #958993;
 `;
@@ -54,7 +55,13 @@ const user = ({ id, name }) => (
   </SideBarListItem>
 );
 
-export default ({ workSpaceName, username, channels, users }) => (
+export default ({
+  workSpaceName,
+  username,
+  channels,
+  users,
+  onAddChannelClick
+}) => (
   <ChannelWrapper>
     <PushLeft>
       <WorkSpaceNameHeader>{workSpaceName}</WorkSpaceNameHeader>
@@ -62,7 +69,9 @@ export default ({ workSpaceName, username, channels, users }) => (
     </PushLeft>
     <div>
       <SideBarList>
-        <SideBarListHeader>Channels</SideBarListHeader>
+        <SideBarListHeader>
+          Channels <Icon onClick={onAddChannelClick} name="plus circle" />
+        </SideBarListHeader>
         {channels.map(channel)}
       </SideBarList>
     </div>

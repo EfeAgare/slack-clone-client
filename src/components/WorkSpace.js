@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const WorkSpaceWrapper = styled.div`
   grid-column: 1;
-  grid-row: 1 / 4;
+  grid-row: 1 / 5;
   background-color: #362234;
   color: #958993;
 `;
@@ -33,10 +34,13 @@ const WorkSpaceListItem = styled.li`
   }
 `;
 
-const WorkSpace = ({ id, letter }) => <WorkSpaceListItem key={`workSpace-${id}`}>{letter}</WorkSpaceListItem>;
+const WorkSpace = ({ id, letter }) => (
+  <Link key={`workSpace-${id}`} to={`/view-workspace/${id}`}>
+    <WorkSpaceListItem >{letter}</WorkSpaceListItem>
+  </Link>
+);
 
 export default ({ allWorkSpaces }) => (
-  
   <WorkSpaceWrapper>
     <WorkSpaceList>{allWorkSpaces.map(WorkSpace)}</WorkSpaceList>
   </WorkSpaceWrapper>

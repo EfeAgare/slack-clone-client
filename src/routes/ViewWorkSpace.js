@@ -4,12 +4,11 @@ import Messages from '../components/Messages';
 import AppLayout from '../components/AppLayout';
 import SendMessage from '../components/SendMessage';
 import Header from '../components/Header';
-import SideBar from '../containers/SideBar'
+import SideBar from '../containers/SideBar';
 
-
-export default () => (
+const ViewWorkSpace = ({ match: { params } }) => (
   <AppLayout>
-   <SideBar currentWorkSpaceId="1"/>
+    <SideBar currentWorkSpaceId={params.id} />
     <Header channelName="general" />
     <Messages>
       <ul className="message-list">
@@ -20,3 +19,5 @@ export default () => (
     <SendMessage channelName="general" />
   </AppLayout>
 );
+
+export default ViewWorkSpace;
