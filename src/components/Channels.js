@@ -19,6 +19,17 @@ const SideBarList = styled.ul`
   width: 100%;
   list-style: none;
   padding-left: 0px;
+  :first-child {
+    &:hover {
+      color: #ffff;
+    }
+   
+  }
+    a {
+      text-decoration: none;
+      color: #958993;
+
+  }
 `;
 
 const paddingLeft = 'padding-left: 10px';
