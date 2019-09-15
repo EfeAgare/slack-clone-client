@@ -40,7 +40,6 @@ const ViewWorkSpace = ({
       />
       <Header channelName={channel.name} />
       <Messages channelId={channel.id}>
-        {console.log(channel.id)}
         <ul className="message-list">
           <li />
           <li />

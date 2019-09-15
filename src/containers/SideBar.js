@@ -3,22 +3,30 @@ import jwt from 'jsonwebtoken';
 import WorkSpace from '../components/WorkSpace';
 import Channels from '../components/Channels';
 import AddChannelModal from '../components/AddChannelModal';
+import WorSpaceInviteModal from '../components/WorSpaceInviteModal';
 import sortBy from 'lodash/sortBy';
-
-
 
 class SideBar extends Component {
   state = {
-    openAddNewChannelModal: false
+    openAddNewChannelModal: false,
+    openWorSpaceInviteModal: false
   };
 
   handleAddChannelClick = dimmer =>
     this.setState({ dimmer, openAddNewChannelModal: true });
+
   handleCloseChannelClick = () =>
     this.setState({ openAddNewChannelModal: false });
+
+  handleWorkSpaceInviteClick = dimmer =>
+    this.setState({ dimmer, openWorSpaceInviteModal: true });
+
+  handleCloseWorkSpaceInviteModal = () =>
+    this.setState({ openWorSpaceInviteModal: false });
   render() {
     const { allWorkSpace, workSpace } = this.props;
 
+    const { openAddNewChannelModal, openWorSpaceInviteModal } = this.state;
     let username;
     try {
       const token = localStorage.getItem('token');
@@ -35,6 +43,7 @@ class SideBar extends Component {
           username={username}
           channels={sortBy(workSpace.channels, 'name')}
           onAddChannelClick={this.handleAddChannelClick}
+          onWorkSpaceInviteClick = {this.handleWorkSpaceInviteClick}
           users={[{ id: 1, name: 'efe' }, { id: 2, name: 'knowledge' }]}
         >
           Channels
@@ -42,9 +51,16 @@ class SideBar extends Component {
         <AddChannelModal
           onClose={this.handleCloseChannelClick}
           workSpaceId={workSpace.id}
-          open={this.state.openAddNewChannelModal}
+          open={openAddNewChannelModal}
           dimmer="inverted"
           key="sidebar-add-channel-modal"
+        />
+        <WorSpaceInviteModal
+          onClose={this.handleCloseWorkSpaceInviteModal}
+          workSpaceId={workSpace.id}
+          open={openWorSpaceInviteModal}
+          dimmer="inverted"
+          key="invite-member-modal"
         />
       </Fragment>
     );

@@ -1,14 +1,20 @@
 import React from 'react';
-import { Button, Form, Input, Modal, Checkbox } from 'semantic-ui-react';
+import { Button, Form, TextArea, Modal } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { Formik } from 'formik';
 import { createChannelMutation } from '../graphql/mutation/createChannel';
-import allWorkSpaceQuery from '../graphql/query/allWorkSpace';
-import { modalStyle, modalHeight, modalContent } from '../styles/modalStyles';
 
-const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
+import { modalHeight, modalContent, modalStyle } from '../styles/modalStyles';
+
+const WorSpaceInviteModal = ({
+  open,
+  onClose,
+  dimmer,
+  workSpaceId,
+  mutate
+}) => (
   <Modal open={open} onClose={onClose} dimmer={dimmer} style={modalHeight}>
-    <Modal.Header style={modalContent}>Create a channel</Modal.Header>
+    <Modal.Header style={modalContent}>Request invitations</Modal.Header>
     <Modal.Content style={modalContent}>
       <Formik
         initialValues={{ name: '' }}
@@ -18,20 +24,6 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
             variables: {
               workSpaceId: parseInt(workSpaceId, 10),
               name: values.name
-            },
-            update: (store, { data: { createChannel } }) => {
-              // Read the data from our cache for this query.
-              const { ok, channel } = createChannel;
-              if (!ok) {
-                return;
-              }
-              const data = store.readQuery({ query: allWorkSpaceQuery });
-              // Add our channel from the mutation to the end.
-              data.allWorkSpace
-                .find(workSpace => workSpace.id === workSpaceId)
-                .channels.push(channel);
-              // Write our data back to the cache.
-              store.writeQuery({ query: allWorkSpaceQuery, data });
             }
           });
           onClose();
@@ -50,22 +42,15 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
           <Form>
             <Form.Field>
               <Modal.Description>
-                <p>Channels are where your members communicate.</p>
                 <p>
-                  They’re best when organized around a topic — #team-marketing
-                  or #proj-budget, for example.
-                </p>
-                <p>
-                  Learn more about how to create and name channels for your
-                  team.
+                  Fill in the email address of the people you’d like to invite.
                 </p>
               </Modal.Description>
             </Form.Field>
             <Form.Field>
-              <label>Name</label>
-              <Input
-                fluid
-                placeholder="# e.g efe-knowledge"
+              <label>Emails</label>
+              <TextArea
+                placeholder="efe@knowledge.com, love@example.com "
                 name="name"
                 type="text"
                 onChange={handleChange}
@@ -76,13 +61,21 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
             </Form.Field>
             <Form.Field>
               <Modal.Description>
-                <h4>Make private</h4>
+                <p>
+                  {' '}
+                  Tip: Copy and paste a list of contacts from your email. Please
+                  separate multiple addresses with commas!
+                </p>
+              </Modal.Description>
+            </Form.Field>
+            <Form.Field>
+              <Modal.Description>
+                <h4>Default Channels</h4>
                 <div style={modalStyle}>
                   <p>
-                    Make private When a channel is set to private, it can only
-                    be viewed or joined by invitation.
+                    New members will automatically join #general and #random
+                    channels
                   </p>
-                  <Checkbox toggle />
                 </div>
               </Modal.Description>
             </Form.Field>
@@ -100,7 +93,7 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
                 onClick={handleSubmit}
                 type="submit"
               >
-                Create
+                Add Invitees
               </Button>
             </Form.Field>
           </Form>
@@ -110,4 +103,18 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
   </Modal>
 );
 
-export default graphql(createChannelMutation)(ChannelModal);
+// console.log(document.getElements('textarea'))
+const tx = document.getElementsByTagName('textarea');
+for (let i = 0; i < tx.length; i++) {
+  tx[i].setAttribute(
+    'style',
+    'height:' + tx[i].scrollHeight + 'px;overflow-y:hidden;'
+  );
+  tx[i].addEventListener('input', OnInput, false);
+}
+
+function OnInput() {
+  this.style.height = 'auto';
+  this.style.height = this.scrollHeight + 'px';
+}
+export default graphql(createChannelMutation)(WorSpaceInviteModal);

@@ -23,12 +23,10 @@ const SideBarList = styled.ul`
     &:hover {
       color: #ffff;
     }
-   
   }
-    a {
-      text-decoration: none;
-      color: #958993;
-
+  a {
+    text-decoration: none;
+    color: #958993;
   }
 `;
 
@@ -75,7 +73,8 @@ export default ({
   channels,
   users,
   onAddChannelClick,
-  workSpaceId
+  workSpaceId,
+  onWorkSpaceInviteClick
 }) => (
   <ChannelWrapper>
     <PushLeft>
@@ -95,6 +94,11 @@ export default ({
         <SideBarListHeader>Direct Messages</SideBarListHeader>
         {users.map(user)}
       </SideBarList>
+    </div>
+    <div >
+      <a href="#invite-people" onClick={onWorkSpaceInviteClick}>
+        + Invite people
+      </a>
     </div>
   </ChannelWrapper>
 );
