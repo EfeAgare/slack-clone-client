@@ -1,47 +1,41 @@
 import React, { Component } from 'react';
 import { Form, Button, Container, Header } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-
-const SignUpMutation = gql`
-  mutation($username: String!, $email: String!, $password: String!) {
-    register(username: $username, email: $email, password: $password) {
-      ok
-      token
-      refreshToken
-      errors {
-        path
-        message
-      }
-    }
-  }
-`;
+import { SignUpMutation } from '../graphql/mutation/signUpMutation';
 
 class Register extends Component {
+  search  = this.props.location.search;
+  searchParams = new URLSearchParams(this.search);
   state = {
     username: '',
     email: '',
     password: '',
     usernameError: '',
     emailError: '',
-    passwordError: ''
+    passwordError: '',
+    token: this.searchParams.get('q') || ''
   };
+
+ 
 
   onChange = e => {
     const { name, value } = e.target;
+ 
     this.setState({
       [name]: value,
       usernameError: '',
       emailError: '',
       passwordError: ''
     });
+    console.log(this.state.token)
   };
 
   onSubmit = async () => {
     const res = await this.props.mutate({
-      variables: this.state
+      variables: this.state,
     });
 
+    
     const { ok, errors, token, refreshToken } = res.data.register;
 
     if (ok) {
@@ -66,7 +60,8 @@ class Register extends Component {
       passwordError,
       emailError
     } = this.state;
-    console.log(usernameError);
+
+    
     return (
       <Container text>
         <Header as="h2">Register</Header>

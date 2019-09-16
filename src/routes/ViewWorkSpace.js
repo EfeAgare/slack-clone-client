@@ -27,7 +27,7 @@ const ViewWorkSpace = ({
           channel => channel.id === parseInt(channelId, 10)
         )
       )
-    : 0;
+    : 1;
   const channel = workSpace.channels[channelIndex];
   return (
     <AppLayout>

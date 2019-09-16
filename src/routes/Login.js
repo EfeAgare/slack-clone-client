@@ -3,21 +3,7 @@ import { Button, Container, Header, Form } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
-import gql from 'graphql-tag';
-
-const LoginMutation = gql`
-  mutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      ok
-      token
-      refreshToken
-      errors {
-        path
-        message
-      }
-    }
-  }
-`;
+import { LoginMutation } from '../graphql/mutation/loginMutation';
 
 class Login extends Component {
   constructor(props) {

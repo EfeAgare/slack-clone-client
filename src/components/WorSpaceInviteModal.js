@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Form, TextArea, Modal } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { Formik } from 'formik';
-import { createChannelMutation } from '../graphql/mutation/createChannel';
-
+import { createWorkSpaceMemberMutation } from '../graphql/mutation/addWorkspaceMembers';
+import normalizeError from '../utils/normalizeErrors';
 import { modalHeight, modalContent, modalStyle } from '../styles/modalStyles';
 
 const WorSpaceInviteModal = ({
@@ -18,15 +18,21 @@ const WorSpaceInviteModal = ({
     <Modal.Content style={modalContent}>
       <Formik
         initialValues={{ name: '' }}
-        onSubmit={async (values, { setSubmitting }) => {
-          setSubmitting(false);
-          await mutate({
+        onSubmit={async (values, { setSubmitting, setErrors }) => {
+          const res = await mutate({
             variables: {
               workSpaceId: parseInt(workSpaceId, 10),
-              name: values.name
+              email: values.name,
+              url: `${window.location.host}`
             }
           });
-          onClose();
+          const { ok, errors } = res.data.createWorkSpaceMembers;
+          setSubmitting(false);
+          if (ok) {
+            onClose();
+          } else {
+            setErrors(normalizeError(errors));
+          }
         }}
       >
         {({
@@ -104,17 +110,18 @@ const WorSpaceInviteModal = ({
 );
 
 // console.log(document.getElements('textarea'))
-const tx = document.getElementsByTagName('textarea');
-for (let i = 0; i < tx.length; i++) {
-  tx[i].setAttribute(
-    'style',
-    'height:' + tx[i].scrollHeight + 'px;overflow-y:hidden;'
-  );
-  tx[i].addEventListener('input', OnInput, false);
-}
+// const tx = document.getElementsByTagName('textarea');
+// for (let i = 0; i < tx.length; i++) {
+//   tx[i].setAttribute(
+//     'style',
+//     'height:' + tx[i].scrollHeight + 'px;overflow-y:hidden;'
+//   );
+//   tx[i].addEventListener('input', OnInput, false);
+// }
 
-function OnInput() {
-  this.style.height = 'auto';
-  this.style.height = this.scrollHeight + 'px';
-}
-export default graphql(createChannelMutation)(WorSpaceInviteModal);
+// function OnInput() {
+//   this.style.height = 'auto';
+//   this.style.height = this.scrollHeight + 'px';
+// }
+
+export default graphql(createWorkSpaceMemberMutation)(WorSpaceInviteModal);
