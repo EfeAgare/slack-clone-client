@@ -7,6 +7,7 @@ import SendMessage from '../components/SendMessage';
 import Header from '../components/Header';
 import SideBar from '../containers/SideBar';
 import sortBy from 'lodash/sortBy';
+import { Redirect } from 'react-router-dom';
 
 const ViewWorkSpace = ({
   data: { loading, allWorkSpace },
@@ -18,16 +19,27 @@ const ViewWorkSpace = ({
     return <p> Loading ...</p>;
   }
 
-  const workSpace = allWorkSpace.find(
-    workSpace => workSpace.id === parseInt(id, 10)
-  );
-  const channelIndex = !!channelId
+  if (!allWorkSpace.length) {
+    return <Redirect to="/create-workspace" />;
+  }
+
+  const workSpaceInteger = parseInt(id, 10);
+  const workSpaceIndex = workSpaceInteger
+    ? allWorkSpace.indexOf(
+        allWorkSpace.find(workSpace => workSpace.id === workSpaceInteger)
+      )
+    : 0;
+
+  const workSpace = allWorkSpace[workSpaceIndex];
+
+  const channelIdInteger = parseInt(channelId, 10);
+  const channelIndex = channelIdInteger
     ? workSpace.channels.indexOf(
-      sortBy(workSpace.channels, 'name').find(
-          channel => channel.id === parseInt(channelId, 10)
+        sortBy(workSpace.channels, 'name').find(
+          channel => channel.id === channelIdInteger
         )
       )
-    : 1;
+    : 0;
   const channel = workSpace.channels[channelIndex];
   return (
     <AppLayout>
