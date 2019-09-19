@@ -1,18 +1,26 @@
 import gql from 'graphql-tag';
 
-
-const allWorkSpaceQuery =  gql`
+const allWorkSpaceQuery = gql`
   {
     allWorkSpace {
       id
       name
-      userId
+      UserId
+      channels {
+        id
+        name
+      }
+    }
+    allInvitedWorkSpace {
+      id
+      name
+      UserId
       channels {
         id
         name
       }
     }
   }
-`
+`;
 
-export default allWorkSpaceQuery
+export default allWorkSpaceQuery;
