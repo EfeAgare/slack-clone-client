@@ -15,7 +15,7 @@ export const Routes = () => {
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/view-workspace/:id?/:channelId?" component={ViewWorkSpace} />
+        <PrivateRoute exact path="/view-workspace/:id?/:channelId?" component={ViewWorkSpace} />
         <PrivateRoute exact path="/create-workspace" component={CreateWorkSpace} />
       </Switch>
     </BrowserRouter>
