@@ -1,13 +1,15 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import allWorkSpaceQuery from '../graphql/query/allWorkSpace';
-import Messages from '../components/Messages';
+
 import AppLayout from '../components/AppLayout';
 import SendMessage from '../components/SendMessage';
 import Header from '../components/Header';
 import SideBar from '../containers/SideBar';
 import sortBy from 'lodash/sortBy';
 import { Redirect } from 'react-router-dom';
+import jwt from 'jsonwebtoken';
+import MessageContainer from '../containers/MessageContainer'
 
 const ViewWorkSpace = ({
   data: { loading, allWorkSpace, allInvitedWorkSpace },
@@ -20,8 +22,9 @@ const ViewWorkSpace = ({
   }
 
 
+  
   const workSpaces = [...allWorkSpace, ...allInvitedWorkSpace]
-  console.log(workSpaces)
+
   if (!workSpaces.length) {
     return <Redirect to="/create-workspace" />;
   }
@@ -48,6 +51,9 @@ const ViewWorkSpace = ({
     channelIndex === -1
       ? workSpace.channels[0]
       : workSpace.channels[channelIndex];
+
+      const token = localStorage.getItem('token');
+      const { user } = jwt.decode(token);
   return (
     <AppLayout>
       <SideBar
@@ -56,17 +62,14 @@ const ViewWorkSpace = ({
           letter: t.name.charAt(0).toUpperCase()
         }))}
         workSpace={workSpace}
+        user={user}
       />
       {channel && <Header channelName={channel.name} />}
       {channel && (
-        <Messages channelId={channel.id}>
-          <ul className="message-list">
-            <li />
-            <li />
-          </ul>
-        </Messages>
+        <MessageContainer channelId={channel.id}/>
+        
       )}
-      {channel && <SendMessage channelName={channel.name} />}
+      {channel && <SendMessage channelName={channel.name} channelId={channel.id} userId={user.id}/>}
     </AppLayout>
   );
 };

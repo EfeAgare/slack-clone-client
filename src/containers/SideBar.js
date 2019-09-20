@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import jwt from 'jsonwebtoken';
 import WorkSpace from '../components/WorkSpace';
 import Channels from '../components/Channels';
 import AddChannelModal from '../components/AddChannelModal';
@@ -24,15 +23,10 @@ class SideBar extends Component {
   handleCloseWorkSpaceInviteModal = () =>
     this.setState({ openWorSpaceInviteModal: false });
   render() {
-    const { allWorkSpace, workSpace } = this.props;
+    const { allWorkSpace, workSpace, user } = this.props;
 
     const { openAddNewChannelModal, openWorSpaceInviteModal } = this.state;
-    let username;
-    try {
-      const token = localStorage.getItem('token');
-      const { user } = jwt.decode(token);
-      username = user.username;
-    } catch (error) {}
+   
     return (
       <Fragment>
         <WorkSpace key="workSpace-sidebar" allWorkSpaces={allWorkSpace} />
@@ -40,7 +34,7 @@ class SideBar extends Component {
           key="channel-sidebar"
           workSpaceName={workSpace.name}
           workSpaceId={workSpace.id}
-          username={username}
+          username={user.username}
           channels={sortBy(workSpace.channels, 'name')}
           onAddChannelClick={this.handleAddChannelClick}
           onWorkSpaceInviteClick = {this.handleWorkSpaceInviteClick}
