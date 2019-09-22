@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { Button, Comment, Form, Header } from 'semantic-ui-react';
+import { Comment } from 'semantic-ui-react';
 import Messages from '../components/Messages';
 import ChannelMessages from '../graphql/query/channelMessages';
 
