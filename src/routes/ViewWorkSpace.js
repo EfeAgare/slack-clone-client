@@ -4,12 +4,12 @@ import allWorkSpaceQuery from '../graphql/query/allWorkSpace';
 
 import AppLayout from '../components/AppLayout';
 import SendMessage from '../components/SendMessage';
-import Header from '../components/Header';
+import MessagePageHeader from '../components/MessagePageHeader';
 import SideBar from '../containers/SideBar';
 import sortBy from 'lodash/sortBy';
 import { Redirect } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
-import MessageContainer from '../containers/MessageContainer'
+import MessageContainer from '../containers/MessageContainer';
 
 const ViewWorkSpace = ({
   data: { loading, allWorkSpace, allInvitedWorkSpace },
@@ -21,9 +21,7 @@ const ViewWorkSpace = ({
     return <p> Loading ...</p>;
   }
 
-
-  
-  const workSpaces = [...allWorkSpace, ...allInvitedWorkSpace]
+  const workSpaces = [...allWorkSpace, ...allInvitedWorkSpace];
 
   if (!workSpaces.length) {
     return <Redirect to="/create-workspace" />;
@@ -52,8 +50,8 @@ const ViewWorkSpace = ({
       ? workSpace.channels[0]
       : workSpace.channels[channelIndex];
 
-      const token = localStorage.getItem('token');
-      const { user } = jwt.decode(token);
+  const token = localStorage.getItem('token');
+  const { user } = jwt.decode(token);
   return (
     <AppLayout>
       <SideBar
@@ -64,12 +62,15 @@ const ViewWorkSpace = ({
         workSpace={workSpace}
         user={user}
       />
-      {channel && <Header channelName={channel.name} />}
+      {channel && <MessagePageHeader channelName={channel.name} />}
+      {channel && <MessageContainer channelId={channel.id} />}
       {channel && (
-        <MessageContainer channelId={channel.id}/>
-        
+        <SendMessage
+          channelName={channel.name}
+          channelId={channel.id}
+          userId={user.id}
+        />
       )}
-      {channel && <SendMessage channelName={channel.name} channelId={channel.id} userId={user.id}/>}
     </AppLayout>
   );
 };

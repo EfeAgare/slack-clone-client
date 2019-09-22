@@ -9,6 +9,6 @@ const HeaderWrapper = styled.div`
 
 export default ({ channelName }) => (
   <HeaderWrapper>
-    <Header>#  {channelName}</Header>
+    <Header dividing>#  {channelName}</Header>
   </HeaderWrapper>
 );

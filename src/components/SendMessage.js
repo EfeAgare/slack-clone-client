@@ -38,49 +38,28 @@ const sendMessage = ({
   </SendMessageWrapper>
 );
 
-// const MyForm = props => {
-//   const {
-//     values,
-//     touched,
-//     errors,
-//     handleChange,
-//     handleBlur,
-//     handleSubmit,
-//   } = props;
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <input
-//         type="text"
-//         onChange={handleChange}
-//         onBlur={handleBlur}
-//         value={values.name}
-//         name="name"
-//       />
-//       {errors.name && touched.name && <div id="feedback">{errors.name}</div>}
-//       <button type="submit">Submit</button>
-//     </form>
-//   );
-// };
 
 export default compose(
   graphql(createMessageMutation),
   withFormik({
-  mapPropsToValues: () => ({ message: '' }),
+    mapPropsToValues: () => ({ message: '' }),
 
-  handleSubmit: async (values, { setSubmitting, props: { mutate, channelId, userId } }) => {
-    if (!values.message && !values.message.trim) {
-      setSubmitting(false);
-      return;
-    }
-     await mutate({
-      variables: {
-        channelId: parseInt(channelId, 10),
-        userId: parseInt(userId, 10),
-        text: values.message
+    handleSubmit: async (
+      values,
+      { setSubmitting, props: { mutate, channelId } }
+    ) => {
+      if (!values.message && !values.message.trim()) {
+        setSubmitting(false);
+        return;
       }
-    });
-    setSubmitting(false);
-    
-
-  }
-}))(sendMessage);
+      await mutate({
+        variables: {
+          channelId: parseInt(channelId, 10),
+          text: values.message
+        }
+      });
+      setSubmitting(false);
+      values.message = ''
+    }
+  })
+)(sendMessage);
