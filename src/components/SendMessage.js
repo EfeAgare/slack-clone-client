@@ -46,7 +46,7 @@ export default compose(
 
     handleSubmit: async (
       values,
-      { setSubmitting, props: { mutate, channelId } }
+      { setSubmitting, resetForm, props: { mutate, channelId } }
     ) => {
       if (!values.message && !values.message.trim()) {
         setSubmitting(false);
@@ -59,7 +59,7 @@ export default compose(
         }
       });
       setSubmitting(false);
-      values.message = ''
+      resetForm(false)
     }
   })
 )(sendMessage);
