@@ -39,8 +39,13 @@ const httpLinkWithMiddleware = afterwareLink.concat(middlewareLink.concat(httpLi
 
 const wsLink = new WebSocketLink({
   uri: 'ws://localhost:8000/graphql',
+  timeout: 30000,
   options: {
     reconnect: true,
+    connectionParams: {
+      token: localStorage.getItem("token"),
+      refreshToken: localStorage.getItem("refreshToken")
+  },
   },
 });
 

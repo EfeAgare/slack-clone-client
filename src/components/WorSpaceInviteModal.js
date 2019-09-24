@@ -124,4 +124,8 @@ const WorSpaceInviteModal = ({
 //   this.style.height = this.scrollHeight + 'px';
 // }
 
-export default graphql(createWorkSpaceMemberMutation)(WorSpaceInviteModal);
+export default graphql(createWorkSpaceMemberMutation, {
+  options: {
+    fetchPolicy: 'network-only'
+  }
+})(WorSpaceInviteModal);

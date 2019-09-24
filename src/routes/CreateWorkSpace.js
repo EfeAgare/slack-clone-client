@@ -59,4 +59,8 @@ class CreateWorkSpace extends Component {
   }
 }
 
-export default graphql(CreateWorkSpaceMutation)(observer(CreateWorkSpace));
+export default graphql(CreateWorkSpaceMutation, {
+  options: {
+    fetchPolicy: 'network-only'
+  }
+})(observer(CreateWorkSpace));

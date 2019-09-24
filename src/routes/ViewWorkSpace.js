@@ -74,4 +74,8 @@ const ViewWorkSpace = ({
     </AppLayout>
   );
 };
-export default graphql(allWorkSpaceQuery)(ViewWorkSpace);
+export default graphql(allWorkSpaceQuery, {
+  options: {
+    fetchPolicy: 'network-only'
+  }
+})(ViewWorkSpace);
