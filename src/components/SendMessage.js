@@ -13,6 +13,7 @@ const SendMessageWrapper = styled.div`
 
 const ENTER_KEY = 13;
 const sendMessage = ({
+  name,
   channelName,
   values,
   handleChange,
@@ -23,7 +24,7 @@ const sendMessage = ({
   <SendMessageWrapper>
     <Input
       fluid
-      placeholder={`Message  #${channelName}`}
+      placeholder={ name ? `Message  ${name}`: `Message  #${channelName}` }
       name="message"
       type="text"
       onChange={handleChange}
@@ -46,18 +47,13 @@ export default compose(
 
     handleSubmit: async (
       values,
-      { setSubmitting, resetForm, props: { mutate, channelId } }
+      { setSubmitting, resetForm, props: { onSubmit }  }
     ) => {
       if (!values.message && !values.message.trim()) {
         setSubmitting(false);
         return;
       }
-      await mutate({
-        variables: {
-          channelId: parseInt(channelId, 10),
-          text: values.message
-        }
-      });
+      await onSubmit(values.message);
       setSubmitting(false);
       resetForm(false)
     }

@@ -6,6 +6,7 @@ import Login from './Login';
 import Register from './Register';
 import CreateWorkSpace from './CreateWorkSpace';
 import ViewWorkSpace from './ViewWorkSpace';
+import DirectMessage from './DirectMessage';
 import { PrivateRoute } from '../utils/authenticate';
 
 export const Routes = () => {
@@ -15,10 +16,22 @@ export const Routes = () => {
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <PrivateRoute exact path="/view-workspace/:id?/:channelId?" component={ViewWorkSpace} />
-        <PrivateRoute exact path="/create-workspace" component={CreateWorkSpace} />
+        <PrivateRoute
+          exact
+          path="/view-workspace/:workSpaceId?/:channelId?"
+          component={ViewWorkSpace}
+        />
+        <PrivateRoute
+          exact
+          path="/view-workspace/user/:workSpaceId/:receiverId"
+          component={DirectMessage}
+        />
+        <PrivateRoute
+          exact
+          path="/create-workspace"
+          component={CreateWorkSpace}
+        />
       </Switch>
     </BrowserRouter>
   );
 };
-

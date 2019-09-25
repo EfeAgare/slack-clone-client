@@ -11,10 +11,10 @@ import { Redirect } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import MessageContainer from '../containers/MessageContainer';
 
-const ViewWorkSpace = ({
+const ViewWorkSpace = ({ mutate,
   data: { loading, allWorkSpace, allInvitedWorkSpace },
   match: {
-    params: { id, channelId }
+    params: { workSpaceId, channelId }
   }
 }) => {
   if (loading) {
@@ -27,7 +27,7 @@ const ViewWorkSpace = ({
     return <Redirect to="/create-workspace" />;
   }
 
-  const workSpaceInteger = parseInt(id, 10);
+  const workSpaceInteger = parseInt(workSpaceId, 10);
   const workSpaceIndex = workSpaceInteger
     ? workSpaces.indexOf(
         workSpaces.find(workSpace => workSpace.id === workSpaceInteger)
@@ -67,8 +67,9 @@ const ViewWorkSpace = ({
       {channel && (
         <SendMessage
           channelName={channel.name}
-          channelId={channel.id}
-          userId={user.id}
+          onSubmit={async (text) => {
+            await mutate({ variables: { text, channelId: channel.id } });
+          }}
         />
       )}
     </AppLayout>

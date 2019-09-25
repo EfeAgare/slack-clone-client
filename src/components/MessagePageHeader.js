@@ -7,8 +7,20 @@ const HeaderWrapper = styled.div`
   grid-row: 1;
 `;
 
-export default ({ channelName }) => (
-  <HeaderWrapper>
-    <Header dividing>#  {channelName}</Header>
-  </HeaderWrapper>
-);
+const MessagePageHeader = ({ channelName, name }) => {
+  if (channelName) {
+    return (
+      <HeaderWrapper>
+        <Header dividing># {channelName}</Header>
+      </HeaderWrapper>
+    );
+  } else {
+    return (
+      <HeaderWrapper>
+        <Header dividing> {name}</Header>
+      </HeaderWrapper>
+    );
+  }
+};
+
+export default MessagePageHeader;

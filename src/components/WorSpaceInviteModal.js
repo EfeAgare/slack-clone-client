@@ -125,7 +125,7 @@ const WorSpaceInviteModal = ({
 // }
 
 export default graphql(createWorkSpaceMemberMutation, {
-  options: {
-    fetchPolicy: 'network-only'
-  }
+  // options: {
+  //   fetchPolicy: 'network-only'
+  // }
 })(WorSpaceInviteModal);

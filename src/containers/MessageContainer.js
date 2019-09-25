@@ -24,10 +24,13 @@ class MessageContainer extends Component {
       this.unsubscribe();
     }
   }
-  subscribe = ({ channelId }) => {
+  subscribe = channelId => {
+    // console.log(this.props.channelId);
     this.props.data.subscribeToMore({
       document: channelMessageSubscription,
-      variables: { channelId },
+      variables: {
+        channelId: channelId
+      },
 
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data.newChannelMessage) return prev;
@@ -50,6 +53,7 @@ class MessageContainer extends Component {
       return <p> Loading ...</p>;
     }
 
+    // console.log(this.props.channelId)
     return (
       <Messages>
         <Comment.Group>
@@ -82,10 +86,10 @@ class MessageContainer extends Component {
 }
 
 export default graphql(ChannelMessages, {
-  variables: props => ({
-    channelId: props.channelId
-  }),
-  options: {
+  options: props => ({
+    variables: {
+      channelId: props.channelId
+    },
     fetchPolicy: 'network-only'
-  }
+  })
 })(MessageContainer);
