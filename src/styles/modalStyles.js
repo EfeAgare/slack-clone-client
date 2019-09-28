@@ -13,3 +13,8 @@ export const modalContent = {
   width: '60%',
   marginTop: '20px'
 };
+
+export const autocomplete = {
+  display: "flex",
+  width: "100%"
+}

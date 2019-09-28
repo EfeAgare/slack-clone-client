@@ -3,12 +3,14 @@ import WorkSpace from '../components/WorkSpace';
 import Channels from '../components/Channels';
 import AddChannelModal from '../components/AddChannelModal';
 import WorSpaceInviteModal from '../components/WorSpaceInviteModal';
+import AddUserModal from '../components/AddUserModal';
 import sortBy from 'lodash/sortBy';
 
 class SideBar extends Component {
   state = {
     openAddNewChannelModal: false,
-    openWorSpaceInviteModal: false
+    openWorSpaceInviteModal: false,
+    openAddUserModal: false
   };
 
   handleAddChannelClick = dimmer =>
@@ -22,11 +24,20 @@ class SideBar extends Component {
 
   handleCloseWorkSpaceInviteModal = () =>
     this.setState({ openWorSpaceInviteModal: false });
+
+  handleAddUserClick = dimmer =>
+    this.setState({ dimmer, openAddUserModal: true });
+
+  handleCloseAddUserModal = () => this.setState({ openAddUserModal: false });
   render() {
     const { allWorkSpace, workSpace, user } = this.props;
 
-    const { openAddNewChannelModal, openWorSpaceInviteModal } = this.state;
-   
+    const {
+      openAddNewChannelModal,
+      openWorSpaceInviteModal,
+      openAddUserModal
+    } = this.state;
+
     return (
       <Fragment>
         <WorkSpace key="workSpace-sidebar" allWorkSpaces={allWorkSpace} />
@@ -37,8 +48,9 @@ class SideBar extends Component {
           username={user.username}
           channels={sortBy(workSpace.channels, 'name')}
           onAddChannelClick={this.handleAddChannelClick}
-          onWorkSpaceInviteClick = {this.handleWorkSpaceInviteClick}
-          users={[{ id: 1, name: 'efe' }, { id: 2, name: 'knowledge' }]}
+          onWorkSpaceInviteClick={this.handleWorkSpaceInviteClick}
+          onAddUserModalClick={this.handleAddUserClick}
+          users={workSpace.directMessageMembers}
         >
           Channels
         </Channels>
@@ -55,6 +67,13 @@ class SideBar extends Component {
           open={openWorSpaceInviteModal}
           dimmer="inverted"
           key="invite-member-modal"
+        />
+        <AddUserModal
+          onClose={this.handleCloseAddUserModal}
+          open={openAddUserModal}
+          workSpaceId={workSpace.id}
+          dimmer="inverted"
+          key="add-user-modal"
         />
       </Fragment>
     );

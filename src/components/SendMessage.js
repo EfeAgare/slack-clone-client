@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Input } from 'semantic-ui-react';
 import { withFormik } from 'formik';
-import { createMessageMutation } from '../graphql/mutation/createMessageMutation';
-import { graphql, compose } from 'react-apollo';
 
+import { compose } from 'react-apollo';
 const SendMessageWrapper = styled.div`
   grid-column: 3;
   grid-row: 4;
@@ -24,7 +23,7 @@ const sendMessage = ({
   <SendMessageWrapper>
     <Input
       fluid
-      placeholder={ name ? `Message  ${name}`: `Message  #${channelName}` }
+      placeholder={name ? `Message  ${name}` : `Message  #${channelName}`}
       name="message"
       type="text"
       onChange={handleChange}
@@ -39,15 +38,13 @@ const sendMessage = ({
   </SendMessageWrapper>
 );
 
-
 export default compose(
-  graphql(createMessageMutation),
   withFormik({
     mapPropsToValues: () => ({ message: '' }),
 
     handleSubmit: async (
       values,
-      { setSubmitting, resetForm, props: { onSubmit }  }
+      { setSubmitting, resetForm, props: { onSubmit } }
     ) => {
       if (!values.message && !values.message.trim()) {
         setSubmitting(false);
@@ -55,7 +52,7 @@ export default compose(
       }
       await onSubmit(values.message);
       setSubmitting(false);
-      resetForm(false)
+      resetForm(false);
     }
   })
 )(sendMessage);

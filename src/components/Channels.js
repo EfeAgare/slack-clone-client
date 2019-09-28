@@ -13,6 +13,8 @@ const ChannelWrapper = styled.div`
 const WorkSpaceNameHeader = styled.h1`
   color: #fff;
   font-size: 20px;
+  margin-top: 10px !important;
+  margin-bottom: unset !important;
 `;
 
 const SideBarList = styled.ul`
@@ -42,6 +44,9 @@ const SideBarListItem = styled.li`
 
 const SideBarListHeader = styled.li`
   ${paddingLeft};
+  display: flex;
+  margin-right: 20px;
+  justify-content: space-between;
 `;
 
 const PushLeft = styled.div`
@@ -61,10 +66,13 @@ const channel = ({ id, name }, workSpaceId) => (
   </Link>
 );
 
-const user = ({ id, name }) => (
-  <SideBarListItem key={`user-${id}`}>
-    <Bubble /> {name}
-  </SideBarListItem>
+const user = ({ id, username }, workSpaceId) => (
+
+  <Link key={`user-${id}`} to={`/view-workspace/user/${workSpaceId}/${id}`}>
+    <SideBarListItem >
+      <Bubble /> {username}
+    </SideBarListItem>
+  </Link>
 );
 
 export default ({
@@ -74,12 +82,13 @@ export default ({
   users,
   onAddChannelClick,
   workSpaceId,
+  onAddUserModalClick,
   onWorkSpaceInviteClick
 }) => (
   <ChannelWrapper>
     <PushLeft>
       <WorkSpaceNameHeader>{workSpaceName}</WorkSpaceNameHeader>
-      {username}
+      <Bubble /> {username.charAt(0).toUpperCase() + username.slice(1)}
     </PushLeft>
     <div>
       <SideBarList>
@@ -91,11 +100,25 @@ export default ({
     </div>
     <div>
       <SideBarList>
-        <SideBarListHeader>Direct Messages</SideBarListHeader>
-        {users.map(user)}
+        <SideBarListHeader>
+          Direct Messages{' '}
+          <Icon onClick={onAddUserModalClick} name="plus circle" />
+        </SideBarListHeader>
+        {users.reduce((acc, element) => {
+  if (element.username === username) {
+    return [element, ...acc];
+  }
+  return [...acc, element];
+}, []).map(u => user(u, workSpaceId))}
+        {/* {users.reduce((acc, element) => {
+  if (element.username === username) {
+    return [element, ...acc];
+  }
+  return [...acc, element];
+}, [])} */}
       </SideBarList>
     </div>
-    <div >
+    <div>
       <a href="#invite-people" onClick={onWorkSpaceInviteClick}>
         + Invite people
       </a>

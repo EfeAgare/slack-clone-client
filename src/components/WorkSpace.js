@@ -35,13 +35,15 @@ const WorkSpaceListItem = styled.li`
 `;
 
 const WorkSpace = ({ id, letter }) => (
-  <Link key={`workSpace-${id}`} to={`/view-workspace/${id}`}>
-    <WorkSpaceListItem >{letter}</WorkSpaceListItem>
+  <Link key={`workSpaces-${id}`} to={`/view-workspace/${id}`}>
+    <WorkSpaceListItem>{letter}</WorkSpaceListItem>
   </Link>
 );
 
-export default ({ allWorkSpaces }) => (
-  <WorkSpaceWrapper>
-    <WorkSpaceList>{allWorkSpaces.map(WorkSpace)}</WorkSpaceList>
-  </WorkSpaceWrapper>
-);
+export default ({ allWorkSpaces }) => {
+  return (
+    <WorkSpaceWrapper>
+      <WorkSpaceList>{allWorkSpaces.map(WorkSpace)}</WorkSpaceList>
+    </WorkSpaceWrapper>
+  );
+};

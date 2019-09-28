@@ -6,20 +6,28 @@ const allWorkSpaceQuery = gql`
       id
       name
       UserId
+      directMessageMembers {
+        id
+        username
+      }
       channels {
         id
         name
       }
     }
-    allInvitedWorkSpace {
-      id
-      name
-      UserId
-      channels {
-        id
-        name
-      }
-    }
+    # allInvitedWorkSpace {
+    #   id
+    #   name
+    #   UserId
+    #   directMessageMembers {
+    #     id
+    #     username
+    #   }
+    #   channels {
+    #     id
+    #     name
+    #   }
+    # }
   }
 `;
 

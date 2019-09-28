@@ -14,7 +14,7 @@ import { createDirectMessageMutation } from '../graphql/mutation/createDirectMes
 
 const DirectMessage = ({
   mutate,
-  data: { loading, allWorkSpace, allInvitedWorkSpace },
+  data: { loading, allWorkSpace },
   match: {
     params: { workSpaceId, channelId, receiverId }
   }
@@ -23,8 +23,12 @@ const DirectMessage = ({
     return <p> Loading ...</p>;
   }
 
-  const workSpaces = [...allWorkSpace, ...allInvitedWorkSpace];
+  const workSpaces = allWorkSpace;
+  const token = localStorage.getItem('token');
 
+  if(!token){
+    return <Redirect to="/login" />;
+  }
   if (!workSpaces.length) {
     return <Redirect to="/create-workspace" />;
   }
@@ -52,7 +56,7 @@ const DirectMessage = ({
   //     ? workSpace.channels[0]
   //     : workSpace.channels[channelIndex];
 
-  const token = localStorage.getItem('token');
+
   const { user } = jwt.decode(token);
 
   return (
@@ -70,15 +74,13 @@ const DirectMessage = ({
 
       <SendMessage
         onSubmit={async text => {
-          console.log(receiverId, workSpaceId);
-          const res = await mutate({
+         await mutate({
             variables: {
               receiverId: parseInt(receiverId, 10),
               text: text,
               workSpaceId: parseInt(workSpaceId, 10)
             }
           });
-          console.log(res);
         }}
         name={receiverId}
       />

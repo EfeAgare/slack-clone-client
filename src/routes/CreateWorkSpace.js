@@ -23,7 +23,6 @@ class CreateWorkSpace extends Component {
     const res = await this.props.mutate({
       variables: { name }
     });
-    console.log(res);
     const { ok, errors, workSpace } = res.data.createWorkSpace;
 
     if (ok) {

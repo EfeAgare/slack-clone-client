@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import allWorkSpaceQuery from '../graphql/query/allWorkSpace';
 
 import AppLayout from '../components/AppLayout';
@@ -9,10 +9,13 @@ import SideBar from '../containers/SideBar';
 import sortBy from 'lodash/sortBy';
 import { Redirect } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
+import { createMessageMutation } from '../graphql/mutation/createMessageMutation';
+
 import MessageContainer from '../containers/MessageContainer';
 
-const ViewWorkSpace = ({ mutate,
-  data: { loading, allWorkSpace, allInvitedWorkSpace },
+const ViewWorkSpace = ({
+  mutate,
+  data: { loading, allWorkSpace },
   match: {
     params: { workSpaceId, channelId }
   }
@@ -21,8 +24,12 @@ const ViewWorkSpace = ({ mutate,
     return <p> Loading ...</p>;
   }
 
-  const workSpaces = [...allWorkSpace, ...allInvitedWorkSpace];
+  const workSpaces = allWorkSpace;
+  const token = localStorage.getItem('token');
 
+  if(!token){
+    return <Redirect to="/login" />;
+  }
   if (!workSpaces.length) {
     return <Redirect to="/create-workspace" />;
   }
@@ -50,7 +57,7 @@ const ViewWorkSpace = ({ mutate,
       ? workSpace.channels[0]
       : workSpace.channels[channelIndex];
 
-  const token = localStorage.getItem('token');
+  
   const { user } = jwt.decode(token);
   return (
     <AppLayout>
@@ -67,7 +74,7 @@ const ViewWorkSpace = ({ mutate,
       {channel && (
         <SendMessage
           channelName={channel.name}
-          onSubmit={async (text) => {
+          onSubmit={async text => {
             await mutate({ variables: { text, channelId: channel.id } });
           }}
         />
@@ -75,8 +82,11 @@ const ViewWorkSpace = ({ mutate,
     </AppLayout>
   );
 };
-export default graphql(allWorkSpaceQuery, {
-  options: {
-    fetchPolicy: 'network-only'
-  }
-})(ViewWorkSpace);
+export default compose(
+  graphql(allWorkSpaceQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
+  graphql(createMessageMutation)
+)(ViewWorkSpace);

@@ -7,6 +7,7 @@ const DirectMessages = gql`
       text
       createdAt
       sender {
+        id
         username
       }
     }

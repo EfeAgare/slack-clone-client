@@ -27,7 +27,6 @@ class Register extends Component {
       emailError: '',
       passwordError: ''
     });
-    console.log(this.state.token)
   };
 
   onSubmit = async () => {
@@ -41,7 +40,7 @@ class Register extends Component {
     if (ok) {
       localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
-      this.props.history.push('/');
+      this.props.history.push('/view-workspace');
     } else {
       const err = {};
       // eslint-disable-next-line
