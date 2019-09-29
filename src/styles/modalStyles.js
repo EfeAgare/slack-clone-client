@@ -15,6 +15,10 @@ export const modalContent = {
 };
 
 export const autocomplete = {
-  display: "flex",
-  width: "100%"
-}
+  display: 'flex',
+  width: '100%'
+};
+
+export const headerStyle = {
+  padding: '12px'
+};

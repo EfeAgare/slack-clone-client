@@ -11,10 +11,11 @@ import { Redirect } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import DirectMessageContainer from '../containers/DirectMessageContainer';
 import { createDirectMessageMutation } from '../graphql/mutation/createDirectMessage';
+import directMessageMe from '../graphql/query/directMessageMe';
 
 const DirectMessage = ({
   mutate,
-  data: { loading, allWorkSpace },
+  data: { loading, allWorkSpace, getUser },
   match: {
     params: { workSpaceId, channelId, receiverId }
   }
@@ -23,10 +24,11 @@ const DirectMessage = ({
     return <p> Loading ...</p>;
   }
 
+  console.log(getUser)
   const workSpaces = allWorkSpace;
   const token = localStorage.getItem('token');
 
-  if(!token){
+  if (!token) {
     return <Redirect to="/login" />;
   }
   if (!workSpaces.length) {
@@ -56,7 +58,6 @@ const DirectMessage = ({
   //     ? workSpace.channels[0]
   //     : workSpace.channels[channelIndex];
 
-
   const { user } = jwt.decode(token);
 
   return (
@@ -69,29 +70,55 @@ const DirectMessage = ({
         workSpace={workSpace}
         user={user}
       />
-      <MessagePageHeader name={receiverId} />
-      <DirectMessageContainer workSpaceId={workSpace.id} receiverId={receiverId} />
+      <MessagePageHeader name={getUser.username} />
+      <DirectMessageContainer
+        workSpaceId={workSpace.id}
+        receiverId={receiverId}
+      />
 
       <SendMessage
         onSubmit={async text => {
-         await mutate({
+          await mutate({
             variables: {
               receiverId: parseInt(receiverId, 10),
               text: text,
               workSpaceId: parseInt(workSpaceId, 10)
+            },
+            update: store => {
+              // Read the data from our cache for this query.
+
+              const data = store.readQuery({ query: allWorkSpaceQuery });
+              // Add our channel from the mutation to the end.
+              const notAlreadyPresent = data.allWorkSpace
+                .find(workSpace => workSpace.id === workSpaceId)
+                .directMessageMembers.every(
+                  member => member.id !== parseInt(receiverId, 10)
+                );
+              if (notAlreadyPresent) {
+                data.allWorkSpace
+                  .find(workSpace => workSpace.id === workSpaceId)
+                  .directMessageMembers.push({
+                    _typename: 'User',
+                    id: parseInt(receiverId, 10),
+                    username: getUser.username
+                  });
+                // Write our data back to the cache.
+                store.writeQuery({ query: allWorkSpaceQuery, data });
+              }
             }
           });
         }}
-        name={receiverId}
+        name={getUser.username}
       />
     </AppLayout>
   );
 };
 export default compose(
-  graphql(allWorkSpaceQuery, {
-    options: {
+  graphql(directMessageMe, {
+    options: props => ({
+      variables: { userId: parseInt(props.match.params.receiverId, 10) },
       fetchPolicy: 'network-only'
-    }
+    })
   }),
   graphql(createDirectMessageMutation)
 )(DirectMessage);

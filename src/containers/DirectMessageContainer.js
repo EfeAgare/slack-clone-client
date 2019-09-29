@@ -89,10 +89,12 @@ class DirectMessageContainer extends Component {
 }
 
 export default graphql(DirectMessages, {
+  
   options: props => ({
+
     variables: {
       workSpaceId: props.workSpaceId,
-      otherUserId: parseInt(props.receiverId, 10)
+      otherUserId: parseInt(props.receiverId, 10) || console.log(props)
     },
     fetchPolicy: 'network-only'
   })
