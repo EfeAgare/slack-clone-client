@@ -43,7 +43,12 @@ const WorkSpace = ({ id, letter }) => (
 export default ({ allWorkSpaces }) => {
   return (
     <WorkSpaceWrapper>
-      <WorkSpaceList>{allWorkSpaces.map(WorkSpace)}</WorkSpaceList>
+      <WorkSpaceList>
+        {allWorkSpaces.map(WorkSpace)}
+        <Link key="add-team" to="/create-workspace">
+          <WorkSpaceListItem>+ </WorkSpaceListItem>
+        </Link>
+      </WorkSpaceList>
     </WorkSpaceWrapper>
   );
 };
