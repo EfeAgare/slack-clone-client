@@ -24,7 +24,6 @@ const DirectMessage = ({
     return <p> Loading ...</p>;
   }
 
-  console.log(getUser)
   const workSpaces = allWorkSpace;
   const token = localStorage.getItem('token');
 
@@ -89,8 +88,12 @@ const DirectMessage = ({
 
               const data = store.readQuery({ query: allWorkSpaceQuery });
               // Add our channel from the mutation to the end.
+              // console.log(data.allWorkSpace)
+              // console.log(workSpaceId)
+              // console.log(data.allWorkSpace.find(workSpace => console.log(workSpace.id)))
+              // console.log(data.allWorkSpace.find(workSpace => workSpace.id === parseInt(workSpaceId)))
               const notAlreadyPresent = data.allWorkSpace
-                .find(workSpace => workSpace.id === workSpaceId)
+                .find(workSpace => workSpace.id === parseInt(workSpaceId))
                 .directMessageMembers.every(
                   member => member.id !== parseInt(receiverId, 10)
                 );

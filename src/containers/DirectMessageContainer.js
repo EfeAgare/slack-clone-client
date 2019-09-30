@@ -3,48 +3,48 @@ import { graphql } from 'react-apollo';
 import { Comment } from 'semantic-ui-react';
 import Messages from '../components/Messages';
 import DirectMessages from '../graphql/query/directMessage';
-// import channelMessageSubscription from '../graphql/subscription/channelMessageSubscription';
+import directMessageSubscription from '../graphql/subscription/directMessageSubscription';
 
 class DirectMessageContainer extends Component {
-  // componentWillMount() {
-  //   this.unsubscribe = this.subscribe(this.props.channelId);
-  // }
+  componentWillMount() {
+    this.unsubscribe = this.subscribe(parseInt(this.props.receiverId), this.props.workSpaceId);
+  }
 
-  // componentWillReceiveProps({ channelId }) {
-  //   if (this.props.channelId !== channelId) {
-  //     if (this.unsubscribe) {
-  //       this.unsubscribe();
-  //     }
-  //     this.unsubscribe = this.subscribe(channelId);
-  //   }
-  // }
+  componentWillReceiveProps({ receiverId, workSpaceId }) {
+    if (parseInt(this.props.receiverId) !== receiverId && this.props.workSpaceId !== workSpaceId ) {
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
+      this.unsubscribe = this.subscribe(parseInt(this.props.receiverId), workSpaceId);
+    }
+  }
 
-  // componentWillUnmount() {
-  //   if (this.unsubscribe) {
-  //     this.unsubscribe();
-  //   }
-  // }
-  // subscribe = channelId => {
-  //   // console.log(this.props.channelId);
-  //   this.props.data.subscribeToMore({
-  //     document: channelMessageSubscription,
-  //     variables: {
-  //       channelId: channelId
-  //     },
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
+  subscribe = (receiverId, workSpaceId) => {
+    this.props.data.subscribeToMore({
+      document: directMessageSubscription,
+      variables: {
+        workSpaceId: workSpaceId,
+        receiverId: receiverId
+      },
 
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       if (!subscriptionData.data.newChannelMessage) return prev;
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data.displayDirectMessage) return prev;
 
-  //       return {
-  //         ...prev,
-  //         channelMessages: [
-  //           ...prev.channelMessages,
-  //           subscriptionData.data.newChannelMessage
-  //         ]
-  //       };
-  //     }
-  //   });
-  // };
+        return {
+          ...prev,
+          directMessages: [
+            ...prev.directMessages,
+            subscriptionData.data.displayDirectMessage
+          ]
+        };
+      }
+    });
+  };
   render() {
     const {
       data: { loading, directMessages }
@@ -94,7 +94,7 @@ export default graphql(DirectMessages, {
 
     variables: {
       workSpaceId: props.workSpaceId,
-      otherUserId: parseInt(props.receiverId, 10) || console.log(props)
+      otherUserId: parseInt(props.receiverId, 10)
     },
     fetchPolicy: 'network-only'
   })
