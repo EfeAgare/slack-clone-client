@@ -2,12 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { Input } from 'semantic-ui-react';
 import { withFormik } from 'formik';
-
 import { compose } from 'react-apollo';
+
+import FileUpload from './FileUpload';
+
 const SendMessageWrapper = styled.div`
   grid-column: 3;
   grid-row: 4;
   margin: 20px;
+  display: grid;
+  grid-template-columns: 5% auto;
 `;
 
 const ENTER_KEY = 13;
@@ -21,8 +25,8 @@ const sendMessage = ({
   isSubmitting
 }) => (
   <SendMessageWrapper>
+    <FileUpload/>
     <Input
-      fluid
       placeholder={name ? `Message  ${name}` : `Message  #${channelName}`}
       name="message"
       type="text"

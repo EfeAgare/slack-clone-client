@@ -1,19 +1,19 @@
-
 import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
+// import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { ApolloLink, split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import { createUploadLink } from 'apollo-upload-client';
 
-const httpLink = createHttpLink({ uri: 'http://localhost:8000/graphql' });
+const httpLink = createUploadLink({ uri: 'http://localhost:8000/graphql' });
 
 const middlewareLink = setContext(() => ({
   headers: {
     'x-token': localStorage.getItem('token'),
-    'x-refresh-token': localStorage.getItem('refreshToken'),
-  },
+    'x-refresh-token': localStorage.getItem('refreshToken')
+  }
 }));
 
 const afterwareLink = new ApolloLink((operation, forward) => {
@@ -35,17 +35,19 @@ const afterwareLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-const httpLinkWithMiddleware = afterwareLink.concat(middlewareLink.concat(httpLink));
+const httpLinkWithMiddleware = afterwareLink.concat(
+  middlewareLink.concat(httpLink)
+);
 
 const wsLink = new WebSocketLink({
   uri: 'ws://localhost:8000/graphql',
   options: {
     reconnect: true,
     connectionParams: {
-      token: localStorage.getItem("token"),
-      refreshToken: localStorage.getItem("refreshToken")
-  },
-  },
+      token: localStorage.getItem('token'),
+      refreshToken: localStorage.getItem('refreshToken')
+    }
+  }
 });
 
 const link = split(
@@ -54,10 +56,10 @@ const link = split(
     return kind === 'OperationDefinition' && operation === 'subscription';
   },
   wsLink,
-  httpLinkWithMiddleware,
+  httpLinkWithMiddleware
 );
 
 export default new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache()
 });
