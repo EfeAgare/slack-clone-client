@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Input } from 'semantic-ui-react';
+import { Input, Button, Icon } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import { compose } from 'react-apollo';
 
@@ -22,10 +22,21 @@ const sendMessage = ({
   handleChange,
   handleBlur,
   handleSubmit,
-  isSubmitting
+  isSubmitting,
+  channelId,
+  receiverId,
+  workSpaceId
 }) => (
   <SendMessageWrapper>
-    <FileUpload/>
+    <FileUpload
+      channelId={channelId}
+      receiverId={receiverId}
+      workSpaceId={workSpaceId}
+    >
+      <Button icon style={{ margin: 'unset', borderRadius: 'unset' }}>
+        <Icon name="attach" />
+      </Button>
+    </FileUpload>
     <Input
       placeholder={name ? `Message  ${name}` : `Message  #${channelName}`}
       name="message"

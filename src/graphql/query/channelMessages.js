@@ -6,6 +6,8 @@ const ChannelMessages = gql`
       id
       text
       createdAt
+      path
+      filename
       user {
         username
       }

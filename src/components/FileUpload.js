@@ -1,19 +1,56 @@
-import React from 'react';
-import Dropzone from 'react-dropzone';
-import { Button, Icon } from 'semantic-ui-react';
-const FileUpload = () => (
-  <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
-    {({ getRootProps, getInputProps }) => (
-      <section>
-        <div {...getRootProps()}>
-          <input {...getInputProps()} />
-          <Button icon style={{ margin: 'unset', borderRadius: 'unset' }}>
-            <Icon name="attach" />
-          </Button>
-        </div>
-      </section>
-    )}
-  </Dropzone>
-);
+import React, { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { graphql, compose } from 'react-apollo';
+import { createDirectMessageMutation } from '../graphql/mutation/createDirectMessage';
+import { createMessageMutation } from '../graphql/mutation/createMessageMutation';
+const FileUpload = ({
+  children,
+  disabledClick,
+  channelId,
+  receiverId,
+  workSpaceId,
+  mutate
+}) => {
+  const onDrop = useCallback(
+    async file => {
+      let res;
+      console.log(file);
+      // console.log(receiverId && workSpaceId);
+      // if ((receiverId && workSpaceId) !== undefined) {
+      //   res = await mutate({
+      //     variables: {
+      //       receiverId: receiverId,
+      //       file: file,
+      //       workSpaceId: workSpaceId
+      //     }
+      //   });
+      // } else {
+      res = await mutate({
+        variables: {
+          channelId: channelId,
+          file: file[0]
+        }
+      });
+      // }
+      console.log(res);
+    },
 
-export default FileUpload;
+    [channelId, mutate]
+  );
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    noClick: disabledClick
+  });
+
+  return (
+    <div {...getRootProps()} style={{ outline: 'none' }}>
+      <input {...getInputProps()} />
+      {children}
+    </div>
+  );
+};
+
+export default compose(
+  graphql(createDirectMessageMutation),
+  graphql(createMessageMutation)
+)(FileUpload);

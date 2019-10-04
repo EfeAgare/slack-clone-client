@@ -77,6 +77,7 @@ const ViewWorkSpace = ({
           onSubmit={async text => {
             await mutate({ variables: { text, channelId: channel.id } });
           }}
+          channelId={channel.id}
         />
       )}
     </AppLayout>

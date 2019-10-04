@@ -6,6 +6,8 @@ const channelMessageSubscription = gql`
       id
       text
       createdAt
+      path
+      filename
       sender {
         username
       }

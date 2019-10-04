@@ -112,6 +112,8 @@ const DirectMessage = ({
           });
         }}
         name={getUser.username}
+        receiverId={parseInt(receiverId, 10)}
+        workSpaceId={parseInt(workSpaceId, 10)}
       />
     </AppLayout>
   );
