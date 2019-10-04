@@ -17,20 +17,24 @@ const WorSpaceInviteModal = ({
     <Modal.Header style={modalContent}>Request invitations</Modal.Header>
     <Modal.Content style={modalContent}>
       <Formik
-        initialValues={{ name: '' }}
+        initialValues={{ email: '' }}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           const res = await mutate({
             variables: {
               workSpaceId: parseInt(workSpaceId, 10),
-              email: values.name,
+              email: values.email.split(","),
               url: `${window.location.host}`
             }
           });
+          console.log(res)
           const { ok, errors } = res.data.createWorkSpaceMembers;
+          
           setSubmitting(false);
+          
           if (ok) {
             onClose();
           } else {
+            // onClose();
             setErrors(normalizeError(errors));
           }
         }}
@@ -57,13 +61,13 @@ const WorSpaceInviteModal = ({
               <label>Emails</label>
               <TextArea
                 placeholder="efe@knowledge.com, love@example.com "
-                name="name"
+                name="email"
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.name}
+                // value={values.email}
               />
-              {errors.name && touched.name && errors.name}
+              {errors.email && touched.email && errors.email}
             </Form.Field>
             <Form.Field>
               <Modal.Description>
