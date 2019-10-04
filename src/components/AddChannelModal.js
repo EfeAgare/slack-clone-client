@@ -11,13 +11,16 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
     <Modal.Header style={modalContent}>Create a channel</Modal.Header>
     <Modal.Content style={modalContent}>
       <Formik
-        initialValues={{ name: '' }}
+        initialValues={{ public: true, name: '' }}
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(false);
+
+          console.log(workSpaceId)
           await mutate({
             variables: {
               workSpaceId: parseInt(workSpaceId, 10),
-              name: values.name
+              name: values.name,
+              public: values.public
             },
             update: (store, { data: { createChannel } }) => {
               // Read the data from our cache for this query.
@@ -44,7 +47,8 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting
+          isSubmitting,
+          setFieldValue
           /* and other goodies */
         }) => (
           <Form>
@@ -82,8 +86,14 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
                     Make private When a channel is set to private, it can only
                     be viewed or joined by invitation.
                   </p>
-                  <Checkbox toggle />
+                  <Checkbox
+                    toggle
+                    onChange={(e, { checked }) =>
+                      setFieldValue('public', !checked)
+                    }
+                  />
                 </div>
+                {values.public ? 'yea' : 'true'}
               </Modal.Description>
             </Form.Field>
             <Form.Field>

@@ -13,6 +13,7 @@ const allWorkSpaceQuery = gql`
       channels {
         id
         name
+        public
       }
     }
     # allInvitedWorkSpace {

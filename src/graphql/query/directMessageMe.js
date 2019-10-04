@@ -17,6 +17,7 @@ const directMessageMeQuery = gql`
       channels {
         id
         name
+        public
       }
     }
   }

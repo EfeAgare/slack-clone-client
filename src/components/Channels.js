@@ -60,16 +60,28 @@ const Green = styled.span`
 // &#8226; unicode character
 const Bubble = ({ on = true }) => (on ? <Green>&#8226;</Green> : '○');
 
-const channel = ({ id, name }, workSpaceId) => (
-  <Link key={`channel-${id}`} to={`/view-workspace/${workSpaceId}/${id}`}>
-    <SideBarListItem># {name}</SideBarListItem>
-  </Link>
-);
+const channel = ({ id, name, public: Public }, workSpaceId) =>
+  // if(public === t)
+  Public ? (
+    <Link key={`channel-${id}`} to={`/view-workspace/${workSpaceId}/${id}`}>
+      <SideBarListItem># {name}</SideBarListItem>
+    </Link>
+  ) : (
+    <Link key={`channel-${id}`} to={`/view-workspace/${workSpaceId}/${id}`}>
+      <SideBarListItem>
+        <Icon name="lock" />
+        {name}
+      </SideBarListItem>
+    </Link>
+  );
+
+  // <Link key={`channel-${id}`} to={`/view-workspace/${workSpaceId}/${id}`}>
+  //   <SideBarListItem># {name}</SideBarListItem>
+  // </Link>
 
 const user = ({ id, username }, workSpaceId) => (
-
   <Link key={`user-${id}`} to={`/view-workspace/user/${workSpaceId}/${id}`}>
-    <SideBarListItem >
+    <SideBarListItem>
       <Bubble /> {username}
     </SideBarListItem>
   </Link>
@@ -95,6 +107,7 @@ export default ({
         <SideBarListHeader>
           Channels <Icon onClick={onAddChannelClick} name="plus circle" />
         </SideBarListHeader>
+        {console.log(channels)}
         {channels.map(c => channel(c, workSpaceId))}
       </SideBarList>
     </div>
@@ -104,12 +117,14 @@ export default ({
           Direct Messages{' '}
           <Icon onClick={onAddUserModalClick} name="plus circle" />
         </SideBarListHeader>
-        {users.reduce((acc, element) => {
-  if (element.username === username) {
-    return [element, ...acc];
-  }
-  return [...acc, element];
-}, []).map(u => user(u, workSpaceId))}
+        {users
+          .reduce((acc, element) => {
+            if (element.username === username) {
+              return [element, ...acc];
+            }
+            return [...acc, element];
+          }, [])
+          .map(u => user(u, workSpaceId))}
         {/* {users.reduce((acc, element) => {
   if (element.username === username) {
     return [element, ...acc];

@@ -25,6 +25,7 @@ const ViewWorkSpace = ({
   }
 
   const workSpaces = allWorkSpace;
+  console.log(workSpaces)
   const token = localStorage.getItem('token');
 
   if(!token){
@@ -69,7 +70,7 @@ const ViewWorkSpace = ({
         workSpace={workSpace}
         user={user}
       />
-      {channel && <MessagePageHeader channelName={channel.name} />}
+      {channel && <MessagePageHeader channelName={channel.name} public={channel.public}/>}
       {channel && <MessageContainer channelId={channel.id} />}
       {channel && (
         <SendMessage

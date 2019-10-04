@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { Header } from 'semantic-ui-react';
+import { Header, Icon } from 'semantic-ui-react';
 
 import { headerStyle } from '../styles/modalStyles';
 
@@ -9,12 +9,18 @@ const HeaderWrapper = styled.div`
   grid-row: 1;
 `;
 
-const MessagePageHeader = ({ channelName, name }) => {
+const MessagePageHeader = ({ channelName, public: Public, name }) => {
   if (channelName) {
-    return (
+    return Public ? (
       <HeaderWrapper>
         <Header dividing style={headerStyle}>
           # {channelName}
+        </Header>
+      </HeaderWrapper>
+    ) : (
+      <HeaderWrapper>
+        <Header dividing style={headerStyle}>
+          <Icon name="lock" /> {channelName}
         </Header>
       </HeaderWrapper>
     );

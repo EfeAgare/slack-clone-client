@@ -38,7 +38,7 @@ const sendMessage = ({
       </Button>
     </FileUpload>
     <Input
-      placeholder={name ? `Message  ${name}` : `Message  #${channelName}`}
+      placeholder={name ? `Message  ${name}` : `Message  ${channelName}`}
       name="message"
       type="text"
       onChange={handleChange}
