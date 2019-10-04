@@ -14,28 +14,26 @@ const FileUpload = ({
   const onDrop = useCallback(
     async file => {
       let res;
-      console.log(file);
-      // console.log(receiverId && workSpaceId);
-      // if ((receiverId && workSpaceId) !== undefined) {
-      //   res = await mutate({
-      //     variables: {
-      //       receiverId: receiverId,
-      //       file: file,
-      //       workSpaceId: workSpaceId
-      //     }
-      //   });
-      // } else {
-      res = await mutate({
-        variables: {
-          channelId: channelId,
-          file: file[0]
-        }
-      });
-      // }
+      if ((receiverId && workSpaceId) !== undefined) {
+        res = await mutate({
+          variables: {
+            receiverId: receiverId,
+            file: file,
+            workSpaceId: workSpaceId
+          }
+        });
+      } else {
+        res = await mutate({
+          variables: {
+            channelId: channelId,
+            file: file[0]
+          }
+        });
+      }
       console.log(res);
     },
 
-    [channelId, mutate]
+    [channelId, mutate, receiverId, workSpaceId]
   );
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
