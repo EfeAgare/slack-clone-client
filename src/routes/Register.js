@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Form, Button, Container, Header } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { SignUpMutation } from '../graphql/mutation/signUpMutation';
+import HeaderTitle from '../components/Header'
+
 
 class Register extends Component {
   search  = this.props.location.search;
@@ -62,7 +64,10 @@ class Register extends Component {
 
     
     return (
+      <>
+      <HeaderTitle/>
       <Container text>
+
         <Header as="h2">Register</Header>
         <Form error>
           <Form.Field>
@@ -101,6 +106,7 @@ class Register extends Component {
           <Button onClick={this.onSubmit}>Submit</Button>
         </Form>
       </Container>
+      </>
     );
   }
 }

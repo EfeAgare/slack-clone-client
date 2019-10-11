@@ -4,6 +4,8 @@ import { graphql } from 'react-apollo';
 import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
 import { CreateWorkSpaceMutation } from '../graphql/mutation/createWorkSpaceMutation';
+import HeaderTitle from '../components/Header'
+
 class CreateWorkSpace extends Component {
   constructor(props) {
     super(props);
@@ -38,6 +40,8 @@ class CreateWorkSpace extends Component {
   };
   render() {
     return (
+      <>
+      <HeaderTitle/>
       <Container text>
         <Header as="h2">Create A WorkSpace</Header>
         <Form error>
@@ -54,6 +58,7 @@ class CreateWorkSpace extends Component {
           <Button onClick={this.onSubmit}>Submit</Button>
         </Form>
       </Container>
+      </>
     );
   }
 }

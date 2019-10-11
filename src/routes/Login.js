@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
 import { LoginMutation } from '../graphql/mutation/loginMutation';
-
+import HeaderTitle from '../components/Header'
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +44,8 @@ class Login extends Component {
   };
   render() {
     return (
+      <>
+      <HeaderTitle/>
       <Container text>
         <Header as="h2">Login</Header>
         <Form error>
@@ -74,6 +76,7 @@ class Login extends Component {
           <Button onClick={this.onSubmit}>Submit</Button>
         </Form>
       </Container>
+      </>
     );
   }
 }
