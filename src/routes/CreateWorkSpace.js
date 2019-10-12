@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Container, Header, Form } from 'semantic-ui-react';
+import { Button, Container, Form } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
 import { CreateWorkSpaceMutation } from '../graphql/mutation/createWorkSpaceMutation';
-import HeaderTitle from '../components/Header'
+import HeaderTitle from '../components/Header';
+import { Title } from '../containers/common/Title';
 
 class CreateWorkSpace extends Component {
   constructor(props) {
@@ -41,23 +42,23 @@ class CreateWorkSpace extends Component {
   render() {
     return (
       <>
-      <HeaderTitle/>
-      <Container text>
-        <Header as="h2">Create A WorkSpace</Header>
-        <Form error>
-          <Form.Field>
-            <Form.Input
-              fluid
-              error={this.errors.nameError}
-              name="name"
-              placeholder="Name"
-              value={this.name}
-              onChange={this.onChange}
-            />
-          </Form.Field>
-          <Button onClick={this.onSubmit}>Submit</Button>
-        </Form>
-      </Container>
+        <HeaderTitle />
+        <Container text>
+          <Title title="Create a WorkSpace"/>
+          <Form error>
+            <Form.Field>
+              <Form.Input
+                fluid
+                error={this.errors.nameError}
+                name="name"
+                placeholder="Name"
+                value={this.name}
+                onChange={this.onChange}
+              />
+            </Form.Field>
+            <Button onClick={this.onSubmit}>Submit</Button>
+          </Form>
+        </Container>
       </>
     );
   }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Container, Header, Form } from 'semantic-ui-react';
+import { Button, Container, Form } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { observer } from 'mobx-react';
 import { extendObservable } from 'mobx';
 import { LoginMutation } from '../graphql/mutation/loginMutation';
 import HeaderTitle from '../components/Header'
+import { Title } from '../containers/common/Title';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +48,7 @@ class Login extends Component {
       <>
       <HeaderTitle/>
       <Container text>
-        <Header as="h2">Login</Header>
+      <Title title="Login"/>
         <Form error>
           <Form.Field>
             <Form.Input

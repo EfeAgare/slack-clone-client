@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Form, Button, Container, Header } from 'semantic-ui-react';
+import { Form, Button, Container } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import { SignUpMutation } from '../graphql/mutation/signUpMutation';
 import HeaderTitle from '../components/Header'
-
+import { Title } from '../containers/common/Title';
 
 class Register extends Component {
   search  = this.props.location.search;
@@ -68,7 +68,7 @@ class Register extends Component {
       <HeaderTitle/>
       <Container text>
 
-        <Header as="h2">Register</Header>
+      <Title title="Register"/>
         <Form error>
           <Form.Field>
             <Form.Input
