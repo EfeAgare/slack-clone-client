@@ -26,7 +26,6 @@ const WorSpaceInviteModal = ({
               url: `${window.location.host}`
             }
           });
-          console.log(res)
           const { ok, errors } = res.data.createWorkSpaceMembers;
           
           setSubmitting(false);

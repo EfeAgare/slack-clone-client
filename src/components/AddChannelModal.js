@@ -14,8 +14,6 @@ const ChannelModal = ({ open, onClose, dimmer, workSpaceId, mutate }) => (
         initialValues={{ public: true, name: '' }}
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(false);
-
-          console.log(workSpaceId)
           await mutate({
             variables: {
               workSpaceId: parseInt(workSpaceId, 10),

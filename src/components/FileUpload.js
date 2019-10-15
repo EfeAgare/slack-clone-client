@@ -30,7 +30,6 @@ const FileUpload = ({
           }
         });
       }
-      console.log(res);
     },
 
     [channelId, mutate, receiverId, workSpaceId]

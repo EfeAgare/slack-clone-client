@@ -25,7 +25,6 @@ const ViewWorkSpace = ({
   }
 
   const workSpaces = allWorkSpace;
-  console.log(workSpaces)
   const token = localStorage.getItem('token');
 
   if(!token){

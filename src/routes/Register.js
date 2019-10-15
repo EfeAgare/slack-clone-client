@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo';
 import { SignUpMutation } from '../graphql/mutation/signUpMutation';
 import HeaderTitle from '../components/Header'
 import { Title } from '../containers/common/Title';
-
+import { wsLink } from '../apollo';
 class Register extends Component {
   search  = this.props.location.search;
   searchParams = new URLSearchParams(this.search);
@@ -42,6 +42,7 @@ class Register extends Component {
     if (ok) {
       localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
+      wsLink.subscriptionClient.tryReconnect();
       this.props.history.push('/view-workspace');
     } else {
       const err = {};

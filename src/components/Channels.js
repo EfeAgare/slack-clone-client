@@ -107,7 +107,6 @@ export default ({
         <SideBarListHeader>
           Channels <Icon onClick={onAddChannelClick} name="plus circle" />
         </SideBarListHeader>
-        {console.log(channels)}
         {channels.map(c => channel(c, workSpaceId))}
       </SideBarList>
     </div>

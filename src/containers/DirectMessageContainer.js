@@ -6,15 +6,18 @@ import directMessageSubscription from '../graphql/subscription/directMessageSubs
 import RenderMessage from './common/RenderMessage';
 
 class DirectMessageContainer extends Component {
+
+  state = {
+    hasMoreItems: true,
+  };
   componentWillMount() {
     this.unsubscribe = this.subscribe(
       parseInt(this.props.receiverId),
       this.props.workSpaceId
     );
-    console.log("here")
   }
 
-  componentWillReceiveProps({ receiverId, workSpaceId }) {
+  componentWillReceiveProps({data: {directMessages}, receiverId, workSpaceId}) {
     if (
       parseInt(this.props.receiverId) !== receiverId &&
       this.props.workSpaceId !== workSpaceId
@@ -26,6 +29,24 @@ class DirectMessageContainer extends Component {
         parseInt(this.props.receiverId),
         workSpaceId
       );
+    }
+
+    if (
+      this.scroller &&
+      this.scroller.scrollTop < 100 &&
+      this.props.data.directMessages &&
+      directMessages &&
+      this.props.data.directMessages.length !== directMessages.length
+    ) {
+      // 35 items
+      const heightBeforeRender = this.scroller.scrollHeight;
+      // wait for 70 items to render
+      setTimeout(() => {
+        if (this.scroller) {
+          this.scroller.scrollTop = this.scroller.scrollHeight - heightBeforeRender;
+        }
+
+      }, 120);
     }
   }
 
@@ -42,25 +63,55 @@ class DirectMessageContainer extends Component {
         receiverId: receiverId
       },
 
-      updateQuery: (prev, { subscriptionData }) => {
+      updateQuery: (prev, {subscriptionData}) => {
         if (!subscriptionData.data.displayDirectMessage) return prev;
 
         return {
           ...prev,
-          directMessages: [
-            ...prev.directMessages,
-            subscriptionData.data.displayDirectMessage
+          directMessages: [subscriptionData.data.displayDirectMessage,
+            ...prev.directMessages
+
           ]
         };
       }
     });
   };
+
+  handleScroll=() => {
+    const {data: {directMessages, fetchMore}, channelId} = this.props;
+    if (
+      this.scroller &&
+      this.scroller.scrollTop < 100 &&
+      this.state.hasMoreItems &&
+      directMessages.length >= 35
+    ) {
+      fetchMore({
+        variables: {
+          channelId,
+          cursor: directMessages[directMessages.length - 1].created_at,
+        },
+        updateQuery: (previousResult, {fetchMoreResult}) => {
+          if (!fetchMoreResult) {
+            return previousResult;
+          }
+
+          if (fetchMoreResult.directMessages.length < 35) {
+            this.setState({
+              hasMoreItems: false
+            });
+          }
+
+          return {
+            ...previousResult,
+            directMessages: [...previousResult.directMessages, ...fetchMoreResult.directMessages],
+          };
+        },
+      });
+    }
+
+  }
   render() {
-    const {
-      data: { loading, directMessages },
-      workSpaceId,
-      receiverId
-    } = this.props;
+    const {data: {loading, directMessages}, workSpaceId, receiverId} = this.props;
     if (loading) {
       return <p> Loading ...</p>;
     }
@@ -71,13 +122,16 @@ class DirectMessageContainer extends Component {
 
     return (
       <Messages>
+        <div ref={scroller => this.scroller = scroller} onScroll={this.handleScroll}>
+        
         <RenderMessage
-          messages={directMessages}
-          workSpaceId={workSpaceId}
-          receiverId={parseInt(receiverId, 10)}
-        />
+      messages={directMessages}
+      workSpaceId={workSpaceId}
+      receiverId={parseInt(receiverId, 10)}
+      />
+        </div>
       </Messages>
-    );
+      );
   }
 }
 

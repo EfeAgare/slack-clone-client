@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const ChannelMessages = gql`
-  query($channelId: Int!) {
-    channelMessages(channelId: $channelId) {
+  query($cursor: String, $channelId: Int!) {
+    channelMessages(cursor: $cursor, channelId: $channelId) {
       id
       text
       createdAt
