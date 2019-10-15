@@ -8,6 +8,7 @@ import CreateWorkSpace from './CreateWorkSpace';
 import ViewWorkSpace from './ViewWorkSpace';
 import DirectMessage from './DirectMessage';
 import { PrivateRoute } from '../utils/authenticate';
+import PageNotFound from '../containers/PageNotFound';
 
 export const Routes = () => {
   return (
@@ -31,6 +32,7 @@ export const Routes = () => {
           path="/create-workspace"
           component={CreateWorkSpace}
         />
+        <Route component={PageNotFound}/>
       </Switch>
     </BrowserRouter>
   );

@@ -5,19 +5,39 @@ import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
-const isAuthenticated = () => {
+
+
+ 
+ 
+ const isAuthenticated = () => {
   const token = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
 
   const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET);
   const verifyRefreshToken = jwt.decode(refreshToken);
 
-  if (verifyRefreshToken.user.id || verifyToken.user.id) {
+  if (verifyToken.user.id || verifyRefreshToken.user.id) {
     return true;
   } else {
     return false;
   }
 };
+
+export const currentUser = () => {
+
+  const token = localStorage.getItem('token');
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET);
+  const verifyRefreshToken = jwt.decode(refreshToken);
+  let user = verifyToken.user || verifyRefreshToken.user
+  if (user) {
+    return user;
+  } else {
+    return false;
+  }
+}
+
 export const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
