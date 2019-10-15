@@ -12,6 +12,7 @@ class MessageContainer extends Component {
   };
   componentWillMount() {
     this.unsubscribe = this.subscribe(this.props.channelId);
+
   }
 
   componentWillReceiveProps({data: {messages}, channelId}) {
@@ -33,7 +34,7 @@ class MessageContainer extends Component {
       const heightBeforeRender = this.scroller.scrollHeight;
       // wait for 70 items to render
       setTimeout(() => {
-        if(this.scroller){
+        if (this.scroller) {
           this.scroller.scrollTop = this.scroller.scrollHeight - heightBeforeRender;
         }
       }, 120);
@@ -68,24 +69,25 @@ class MessageContainer extends Component {
   };
 
   handleScroll=() => {
-    const {data: {messages, fetchMore}, channelId} = this.props;
+
+    const { data: { channelMessages, fetchMore}, channelId} = this.props;
     if (
       this.scroller &&
-      this.scroller.scrollTop < 100 &&
+      this.scroller.scrollTop < 150 &&
       this.state.hasMoreItems &&
-      messages.length >= 35
+      channelMessages.length >= 35
     ) {
       fetchMore({
         variables: {
           channelId,
-          cursor: messages[messages.length - 1].created_at,
+          cursor: channelMessages[channelMessages.length - 1].createdAt,
         },
         updateQuery: (previousResult, {fetchMoreResult}) => {
           if (!fetchMoreResult) {
             return previousResult;
           }
 
-          if (fetchMoreResult.messages.length < 35) {
+          if (fetchMoreResult.channelMessages.length < 35) {
             this.setState({
               hasMoreItems: false
             });
@@ -93,7 +95,7 @@ class MessageContainer extends Component {
 
           return {
             ...previousResult,
-            messages: [...previousResult.messages, ...fetchMoreResult.messages],
+            channelMessages: [...previousResult.channelMessages, ...fetchMoreResult.channelMessages],
           };
         },
       });
@@ -108,8 +110,16 @@ class MessageContainer extends Component {
 
     return (
       <Messages>
-        <div ref={scroller => this.scroller = scroller} onScroll={this.handleScroll}>
-        <RenderMessage messages={channelMessages} channelId={channelId} />
+        <div ref={scroller => this.scroller = scroller} onScroll={this.handleScroll} style={{
+        gridColumn: 3,
+        gridRow: 2,
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        overflowY: 'auto',
+      }}>
+           <RenderMessage messages={channelMessages} channelId={channelId} />
         </div>
       </Messages>
       );

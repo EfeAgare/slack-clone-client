@@ -8,7 +8,6 @@ const RenderMessage = ({messages, workSpaceId, channelId, receiverId}) => {
 
  
   return (
-    
     <FileUpload
     disabledClick={true}
     workSpaceId={workSpaceId}
@@ -21,7 +20,6 @@ const RenderMessage = ({messages, workSpaceId, channelId, receiverId}) => {
         <Comment key={message.id}>
               <Comment.Avatar
         src="https://react.semantic-ui.com/images/avatar/small/matt.jpg"
-        key={message.id}
         />
               <Comment.Content>
                 {message.user ? (

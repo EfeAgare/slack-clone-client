@@ -78,7 +78,8 @@ class DirectMessageContainer extends Component {
   };
 
   handleScroll=() => {
-    const {data: {directMessages, fetchMore}, channelId} = this.props;
+
+    const {data: {directMessages, fetchMore}, workSpaceId, receiverId} = this.props;
     if (
       this.scroller &&
       this.scroller.scrollTop < 100 &&
@@ -87,8 +88,9 @@ class DirectMessageContainer extends Component {
     ) {
       fetchMore({
         variables: {
-          channelId,
-          cursor: directMessages[directMessages.length - 1].created_at,
+          workSpaceId: workSpaceId,
+          otherUserId: parseInt(receiverId, 10),
+          cursor: directMessages[directMessages.length - 1].createdAt,
         },
         updateQuery: (previousResult, {fetchMoreResult}) => {
           if (!fetchMoreResult) {

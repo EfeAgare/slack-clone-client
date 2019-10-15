@@ -13,9 +13,8 @@ const FileUpload = ({
 }) => {
   const onDrop = useCallback(
     async file => {
-      let res;
       if ((receiverId && workSpaceId) !== undefined) {
-        res = await mutate({
+         await mutate({
           variables: {
             receiverId: receiverId,
             file: file,
@@ -23,7 +22,7 @@ const FileUpload = ({
           }
         });
       } else {
-        res = await mutate({
+         await mutate({
           variables: {
             channelId: channelId,
             file: file[0]
