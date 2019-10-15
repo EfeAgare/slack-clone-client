@@ -124,7 +124,15 @@ class DirectMessageContainer extends Component {
 
     return (
       <Messages>
-        <div ref={scroller => this.scroller = scroller} onScroll={this.handleScroll}>
+        <div ref={scroller => this.scroller = scroller} onScroll={this.handleScroll} style={{
+        gridColumn: 3,
+        gridRow: 2,
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        overflowY: 'auto',
+      }}>
         
         <RenderMessage
       messages={directMessages}

@@ -15,7 +15,7 @@ class MessageContainer extends Component {
 
   }
 
-  componentWillReceiveProps({data: {messages}, channelId}) {
+  componentWillReceiveProps({data: {channelMessages}, channelId}) {
     if (this.props.channelId !== channelId) {
       if (this.unsubscribe) {
         this.unsubscribe();
@@ -26,9 +26,9 @@ class MessageContainer extends Component {
     if (
       this.scroller &&
       this.scroller.scrollTop < 100 &&
-      this.props.data.messages &&
-      messages &&
-      this.props.data.messages.length !== messages.length
+      this.props.data.channelMessages &&
+      channelMessages &&
+      this.props.data.channelMessages.length !== channelMessages.length
     ) {
       // 35 items
       const heightBeforeRender = this.scroller.scrollHeight;
@@ -70,7 +70,8 @@ class MessageContainer extends Component {
 
   handleScroll=() => {
 
-    const { data: { channelMessages, fetchMore}, channelId} = this.props;
+    const { data: { channelMessages, fetchMore }, channelId} = this.props;
+    console.log(channelMessages[channelMessages.length - 1].createdAt)
     if (
       this.scroller &&
       this.scroller.scrollTop < 150 &&
@@ -82,11 +83,12 @@ class MessageContainer extends Component {
           channelId,
           cursor: channelMessages[channelMessages.length - 1].createdAt,
         },
-        updateQuery: (previousResult, {fetchMoreResult}) => {
-          if (!fetchMoreResult) {
-            return previousResult;
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          console.log(fetchMoreResult)
+          if (!fetchMoreResult.channelMessages) {
+            return previousResult.channelMessages;
           }
-
+      
           if (fetchMoreResult.channelMessages.length < 35) {
             this.setState({
               hasMoreItems: false
