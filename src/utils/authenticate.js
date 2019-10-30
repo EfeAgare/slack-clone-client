@@ -28,11 +28,12 @@ export const currentUser = () => {
   const token = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
 
-  const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET);
-  const verifyRefreshToken = jwt.decode(refreshToken);
-  let user = verifyToken.user || verifyRefreshToken.user
-  if (user) {
-    return user;
+  if (token || refreshToken) {
+
+    const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET);
+    const verifyRefreshToken = jwt.decode(refreshToken);
+    let user = verifyToken.user || verifyRefreshToken.user
+    return user
   } else {
     return false;
   }

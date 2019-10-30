@@ -1,19 +1,19 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+// import { graphql } from 'react-apollo';
+// import gql from 'graphql-tag';
 import { Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import HeaderTitle from '../components/Header';
 
-const HomeQuery = gql`
-  {
-    allUsers {
-      id
-      username
-      email
-    }
-  }
-`;
+// const HomeQuery = gql`
+//   {
+//     allUsers {
+//       id
+//       username
+//       email
+//     }
+//   }
+// `;
 
 const Home = () => {
   return (
@@ -47,4 +47,4 @@ const Home = () => {
   );
 };
 
-export default graphql(HomeQuery)(Home);
+export default (Home);
