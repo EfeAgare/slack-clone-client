@@ -13,3 +13,7 @@ Slack clone using GraphQL and React.
 
 ## Linting Library
   * Eslint
+  
+  
+## . BackEnd .  
+    * https://github.com/EfeAgare/slack-clone-server
