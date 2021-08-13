@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from './Home';
+import Home from './home';
 import Login from './Login';
 import Register from './Register';
 import CreateWorkSpace from './CreateWorkSpace';
