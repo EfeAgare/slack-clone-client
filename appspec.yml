@@ -19,14 +19,14 @@ hooks:
   BeforeInstall:
     - location: scripts/before_install.sh
       timeout: 300
-      runas: root
+      runas: ec2-user
   
   AfterInstall:
     - location: scripts/after_install.sh
-      timeout: 300
-      runas: root
+      timeout: 1200
+      runas: ec2-user
 
   ApplicationStart:
     - location: scripts/app_start.sh
       timeout: 300
-      runas: root
+      runas: ec2-user
