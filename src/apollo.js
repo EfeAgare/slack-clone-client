@@ -7,7 +7,10 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { createUploadLink } from 'apollo-upload-client';
 
-const httpLink = createUploadLink({ uri: 'http://localhost:8000/graphql' });
+const httpLink = createUploadLink({
+	uri: `http://${process.env.REACT_APP_SERVER_URL}/graphql`,
+	credentials: "same-origin",
+});
 
 const middlewareLink = setContext(() => ({
   headers: {
@@ -40,15 +43,15 @@ const httpLinkWithMiddleware = afterwareLink.concat(
 );
 
 export const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:8000/graphql',
-  options: {
-    reconnect: true,
-    lazy: true,
-    connectionParams: {
-      token: localStorage.getItem('token'),
-      refreshToken: localStorage.getItem('refreshToken')
-    }
-  }
+	uri: `ws://${process.env.REACT_APP_SERVER_URL}/graphql`,
+	options: {
+		reconnect: true,
+		lazy: true,
+		connectionParams: {
+			token: localStorage.getItem("token"),
+			refreshToken: localStorage.getItem("refreshToken"),
+		},
+	},
 });
 
 const link = split(
